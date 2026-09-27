@@ -1,1424 +1,298 @@
 <!DOCTYPE html>
-<html lang="ru" data-theme="dark">
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0a0e27">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="AeroLex">
+<meta name="theme-color" content="#2a5298">
+<title>AeroEN — Авиационный английский</title>
 <link rel="manifest" href="./manifest.json">
-<title>AeroLex — Авиационный английский</title>
+<link rel="apple-touch-icon" href="./plane192.png">
 <style>
-/* ============================================================
-   ПЕРЕМЕННЫЕ ТЕМЫ
-   ============================================================ */
-:root {
-  --accent: #6366f1;
-  --accent-hover: #818cf8;
-  --accent-soft: rgba(99, 102, 241, 0.15);
-  --success: #10b981;
-  --success-soft: rgba(16, 185, 129, 0.15);
-  --danger: #ef4444;
-  --danger-soft: rgba(239, 68, 68, 0.15);
-  --warning: #f59e0b;
-  --warning-soft: rgba(245, 158, 11, 0.15);
-  --info: #06b6d4;
-
-  --radius-sm: 8px;
-  --radius: 14px;
-  --radius-lg: 20px;
-  --radius-xl: 28px;
-
-  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Roboto, sans-serif;
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
-  --shadow: 0 4px 16px rgba(0,0,0,0.08);
-  --shadow-lg: 0 20px 50px rgba(0,0,0,0.15);
-  --transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Тёмная тема (по умолчанию) */
-[data-theme="dark"] {
-  --bg: #0a0e27;
-  --bg-gradient: radial-gradient(circle at 20% 0%, #1a1f4e 0%, #0a0e27 50%),
-                 radial-gradient(circle at 80% 100%, #1e1b4b 0%, transparent 50%);
-  --surface: rgba(30, 34, 66, 0.6);
-  --surface-solid: #151a35;
-  --surface-hover: rgba(45, 50, 90, 0.8);
-  --border: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.15);
-  --text: #f1f5f9;
-  --text-dim: #94a3b8;
-  --text-muted: #64748b;
-  --overlay: rgba(10, 14, 39, 0.8);
-}
-
-/* Светлая тема */
-[data-theme="light"] {
-  --bg: #f8fafc;
-  --bg-gradient: radial-gradient(circle at 20% 0%, #e0e7ff 0%, #f8fafc 50%),
-                 radial-gradient(circle at 80% 100%, #ede9fe 0%, transparent 50%);
-  --surface: rgba(255, 255, 255, 0.85);
-  --surface-solid: #ffffff;
-  --surface-hover: rgba(241, 245, 249, 0.95);
-  --border: rgba(15, 23, 42, 0.08);
-  --border-strong: rgba(15, 23, 42, 0.15);
-  --text: #0f172a;
-  --text-dim: #475569;
-  --text-muted: #94a3b8;
-  --overlay: rgba(255, 255, 255, 0.85);
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-html, body { height: 100%; }
-
-body {
-  font-family: var(--font);
-  background: var(--bg);
-  background-image: var(--bg-gradient);
-  background-attachment: fixed;
-  color: var(--text);
-  min-height: 100vh;
-  font-size: 15px;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  padding-bottom: env(safe-area-inset-bottom);
-  transition: background-color var(--transition), color var(--transition);
-}
-
-button, input, select, textarea {
-  font-family: inherit;
-  font-size: inherit;
-  color: inherit;
-}
-
-/* ============================================================
-   LAYOUT
-   ============================================================ */
-.app {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 20px 16px 100px;
-  padding-top: max(20px, env(safe-area-inset-top));
-  min-height: 100vh;
-}
-
-/* ============================================================
-   ШАПКА
-   ============================================================ */
-.top-bar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 24px;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex: 1;
-  min-width: 0;
-}
-
-.logo-slot {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, var(--accent), var(--info));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 18px;
-  color: #fff;
-  flex-shrink: 0;
-  overflow: hidden;
-  box-shadow: 0 4px 12px var(--accent-soft);
-}
-
-.logo-slot img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.brand-text {
-  min-width: 0;
-  flex: 1;
-}
-
-.brand-name {
-  font-weight: 800;
-  font-size: 17px;
-  letter-spacing: -0.3px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.brand-sub {
-  font-size: 11px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.icon-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--text-dim);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all var(--transition);
-  flex-shrink: 0;
-  backdrop-filter: blur(10px);
-}
-.icon-btn:hover { background: var(--surface-hover); color: var(--text); border-color: var(--border-strong); }
-.icon-btn:active { transform: scale(0.94); }
-.icon-btn svg { width: 20px; height: 20px; }
-
-/* ============================================================
-   КАРТОЧКИ
-   ============================================================ */
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 20px;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: var(--shadow);
-  transition: all var(--transition);
-}
-
-.card-elevated {
-  box-shadow: var(--shadow-lg);
-}
-
-/* ============================================================
-   HERO — «Продолжить обучение»
-   ============================================================ */
-.hero {
-  background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
-  border-radius: var(--radius-xl);
-  padding: 22px;
-  color: #fff;
-  position: relative;
-  overflow: hidden;
-  margin-bottom: 16px;
-  box-shadow: 0 20px 40px -12px rgba(99, 102, 241, 0.5);
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
-  top: -50%; right: -20%;
-  width: 240px; height: 240px;
-  background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 70%);
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.hero::after {
-  content: '';
-  position: absolute;
-  bottom: -60%; left: -10%;
-  width: 200px; height: 200px;
-  background: radial-gradient(circle, rgba(255,255,255,0.1), transparent 70%);
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.hero-content { position: relative; z-index: 1; }
-
-.hero-greeting {
-  font-size: 13px;
-  opacity: 0.85;
-  margin-bottom: 4px;
-  letter-spacing: 0.2px;
-}
-
-.hero-title {
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  margin-bottom: 16px;
-  line-height: 1.2;
-}
-
-.hero-progress {
-  background: rgba(255,255,255,0.2);
-  border-radius: 100px;
-  height: 6px;
-  overflow: hidden;
-  margin-bottom: 8px;
-}
-
-.hero-progress-fill {
-  height: 100%;
-  background: #fff;
-  border-radius: 100px;
-  transition: width 500ms cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 12px rgba(255,255,255,0.5);
-}
-
-.hero-stats {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 13px;
-  opacity: 0.95;
-}
-
-.hero-stats b { font-weight: 800; font-size: 15px; }
-
-/* ============================================================
-   ПЛИТКИ ДЕЙСТВИЙ
-   ============================================================ */
-.action-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.action-tile {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 18px;
-  cursor: pointer;
-  transition: all var(--transition);
-  text-align: left;
-  color: var(--text);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  min-height: 130px;
-}
-
-.action-tile:not(:disabled):hover {
-  border-color: var(--border-strong);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow);
-}
-
-.action-tile:not(:disabled):active { transform: translateY(0) scale(0.98); }
-
-.action-tile:disabled { opacity: 0.45; cursor: not-allowed; }
-
-.action-tile.wide { grid-column: span 2; }
-
-.tile-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.tile-icon svg { width: 22px; height: 22px; }
-
-.tile-icon.accent { background: var(--accent-soft); color: var(--accent); }
-.tile-icon.success { background: var(--success-soft); color: var(--success); }
-.tile-icon.danger { background: var(--danger-soft); color: var(--danger); }
-.tile-icon.warning { background: var(--warning-soft); color: var(--warning); }
-
-.tile-content { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; }
-
-.tile-title {
-  font-weight: 700;
-  font-size: 15px;
-  letter-spacing: -0.2px;
-  margin-bottom: 2px;
-}
-
-.tile-sub {
-  font-size: 12px;
-  color: var(--text-muted);
-}
-
-/* ============================================================
-   СТАТИСТИКА НА ГЛАВНОЙ
-   ============================================================ */
-.mini-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-bottom: 16px;
-}
-
-.stat-pill {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 12px 14px;
-  text-align: center;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-
-.stat-pill-value {
-  font-weight: 800;
-  font-size: 20px;
-  letter-spacing: -0.5px;
-  line-height: 1.1;
-}
-
-.stat-pill-label {
-  font-size: 11px;
-  color: var(--text-muted);
-  margin-top: 4px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.stat-pill.streak .stat-pill-value { color: var(--warning); }
-.stat-pill.due .stat-pill-value { color: var(--accent); }
-.stat-pill.difficult .stat-pill-value { color: var(--danger); }
-
-/* ============================================================
-   СЕЛЕКТОР КОЛОДЫ
-   ============================================================ */
-.deck-selector {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 16px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  cursor: pointer;
-  transition: all var(--transition);
-  margin-bottom: 16px;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-
-.deck-selector:hover { border-color: var(--border-strong); background: var(--surface-hover); }
-
-.deck-selector-icon {
-  width: 32px; height: 32px;
-  border-radius: 10px;
-  background: var(--accent-soft);
-  color: var(--accent);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.deck-selector-icon svg { width: 18px; height: 18px; }
-
-.deck-selector-info { flex: 1; min-width: 0; }
-.deck-selector-name {
-  font-weight: 700;
-  font-size: 14px;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.deck-selector-meta { font-size: 12px; color: var(--text-muted); }
-
-.deck-selector-arrow { color: var(--text-muted); flex-shrink: 0; }
-.deck-selector-arrow svg { width: 18px; height: 18px; }
-
-/* ============================================================
-   СПИСКИ КОЛОД
-   ============================================================ */
-.deck-list { display: grid; gap: 10px; }
-
-.deck-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  cursor: pointer;
-  transition: all var(--transition);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-
-.deck-card:hover { border-color: var(--border-strong); transform: translateY(-1px); }
-.deck-card.active { border-color: var(--accent); background: var(--accent-soft); }
-
-.deck-card-icon {
-  width: 40px; height: 40px;
-  border-radius: 12px;
-  background: var(--accent-soft); color: var(--accent);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.deck-card-icon svg { width: 20px; height: 20px; }
-
-.deck-card-info { flex: 1; min-width: 0; }
-.deck-card-name { font-weight: 700; font-size: 15px; letter-spacing: -0.2px; }
-.deck-card-meta { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-
-.deck-card-actions { display: flex; gap: 4px; }
-
-/* ============================================================
-   ВИКТОРИНА
-   ============================================================ */
-.quiz-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.quiz-progress-track {
-  flex: 1;
-  height: 8px;
-  background: var(--surface);
-  border-radius: 100px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-}
-
-.quiz-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--info));
-  border-radius: 100px;
-  transition: width 400ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.quiz-counter {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-dim);
-  white-space: nowrap;
-  font-variant-numeric: tabular-nums;
-}
-
-.quiz-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-bottom: 12px;
-}
-
-.quiz-meta .badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 10px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-size: 10px;
-}
-
-.question-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-xl);
-  padding: 40px 24px;
-  text-align: center;
-  margin-bottom: 16px;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: var(--shadow-lg);
-  min-height: 200px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.question-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  opacity: 0.5;
-}
-
-.question-dir {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  color: var(--accent);
-  text-transform: uppercase;
-  margin-bottom: 16px;
-}
-
-.question-text {
-  font-size: 32px;
-  font-weight: 800;
-  letter-spacing: -1px;
-  line-height: 1.2;
-  word-break: break-word;
-}
-
-.options-grid {
-  display: grid;
-  gap: 10px;
-}
-
-.option-btn {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px 18px;
-  font-size: 15px;
-  font-weight: 600;
-  text-align: left;
-  cursor: pointer;
-  color: var(--text);
-  transition: all 180ms cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  position: relative;
-  overflow: hidden;
-}
-
-.option-btn::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--accent);
-  opacity: 0;
-  transition: opacity 180ms;
-}
-
-.option-btn:hover:not(:disabled) {
-  border-color: var(--accent);
-  transform: translateX(4px);
-}
-
-.option-btn:active:not(:disabled) { transform: translateX(4px) scale(0.99); }
-
-.option-btn .option-key {
-  width: 28px; height: 28px;
-  border-radius: 8px;
-  background: var(--surface-hover);
-  border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 12px;
-  font-weight: 800;
-  flex-shrink: 0;
-  color: var(--text-muted);
-  position: relative;
-  z-index: 1;
-}
-
-.option-btn .option-text {
-  position: relative;
-  z-index: 1;
-  flex: 1;
-}
-
-.option-btn.correct {
-  border-color: var(--success);
-  background: var(--success-soft);
-  animation: correctPulse 500ms ease;
-}
-.option-btn.correct .option-key { background: var(--success); color: #fff; border-color: var(--success); }
-
-.option-btn.wrong {
-  border-color: var(--danger);
-  background: var(--danger-soft);
-  animation: shake 400ms ease;
-}
-.option-btn.wrong .option-key { background: var(--danger); color: #fff; border-color: var(--danger); }
-
-.option-btn:disabled { cursor: default; opacity: 0.75; }
-.option-btn.correct:disabled, .option-btn.wrong:disabled { opacity: 1; }
-
-@keyframes correctPulse {
-  0% { box-shadow: 0 0 0 0 var(--success-soft); }
-  50% { box-shadow: 0 0 0 8px transparent; }
-  100% { box-shadow: 0 0 0 0 transparent; }
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(4px); }
-  25% { transform: translateX(-2px); }
-  75% { transform: translateX(8px); }
-}
-
-/* Typing mode */
-.typing-wrap { display: grid; gap: 12px; }
-
-.typing-input {
-  width: 100%;
-  padding: 18px 20px;
-  font-size: 17px;
-  font-weight: 600;
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  text-align: center;
-  outline: none;
-  color: var(--text);
-  transition: all var(--transition);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-
-.typing-input::placeholder { color: var(--text-muted); font-weight: 400; }
-.typing-input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
-.typing-input.correct { border-color: var(--success); background: var(--success-soft); }
-.typing-input.wrong { border-color: var(--danger); background: var(--danger-soft); }
-
-.typing-feedback {
-  text-align: center;
-  font-size: 14px;
-  font-weight: 600;
-  min-height: 22px;
-}
-.typing-feedback.correct { color: var(--success); }
-.typing-feedback.wrong { color: var(--danger); }
-
-/* Recall box */
-.recall-box {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-xl);
-  padding: 40px 24px;
-  text-align: center;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: var(--shadow-lg);
-}
-.recall-hint {
-  color: var(--text-dim);
-  font-size: 14px;
-  margin-bottom: 20px;
-}
-
-/* ============================================================
-   КАРТОЧКИ (SRS)
-   ============================================================ */
-.flashcard-wrap {
-  perspective: 1200px;
-  margin-bottom: 16px;
-}
-
-.flashcard {
-  position: relative;
-  width: 100%;
-  min-height: 280px;
-  cursor: pointer;
-  transition: transform 600ms cubic-bezier(0.4, 0, 0.2, 1);
-  transform-style: preserve-3d;
-}
-
-.flashcard.flipped { transform: rotateY(180deg); }
-
-.flashcard-face {
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-xl);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 40px 24px;
-  text-align: center;
-  box-shadow: var(--shadow-lg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-
-.flashcard-back { transform: rotateY(180deg); }
-
-.flashcard-badge {
-  font-size: 11px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  font-weight: 700;
-  margin-bottom: 20px;
-}
-
-.flashcard-word {
-  font-size: 32px;
-  font-weight: 800;
-  letter-spacing: -1px;
-  line-height: 1.2;
-  word-break: break-word;
-}
-
-.flashcard-back .flashcard-word { color: var(--accent); }
-
-.flashcard-tap-hint {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-top: 24px;
-}
-
-.rating-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-}
-
-.rating-btn {
-  padding: 14px 6px;
-  border: none;
-  border-radius: var(--radius);
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  color: #fff;
-  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.rating-btn:active { transform: scale(0.95); }
-
-.rating-btn.again { background: var(--danger); box-shadow: 0 4px 12px var(--danger-soft); }
-.rating-btn.hard  { background: var(--warning); box-shadow: 0 4px 12px var(--warning-soft); }
-.rating-btn.good  { background: var(--success); box-shadow: 0 4px 12px var(--success-soft); }
-.rating-btn.easy  { background: var(--info); box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3); }
-
-.rating-btn .rating-interval {
-  font-size: 10px;
-  font-weight: 500;
-  opacity: 0.85;
-}
-
-/* ============================================================
-   РЕЗУЛЬТАТ
-   ============================================================ */
-.result-card {
-  text-align: center;
-  padding: 40px 24px;
-}
-
-.result-emoji { font-size: 64px; margin-bottom: 16px; line-height: 1; }
-
-.result-title {
-  font-size: 26px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  margin-bottom: 8px;
-}
-
-.result-sub {
-  color: var(--text-dim);
-  font-size: 15px;
-  margin-bottom: 24px;
-}
-
-.result-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-bottom: 24px;
-}
-
-.result-stat-value {
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-}
-.result-stat-value.good { color: var(--success); }
-.result-stat-value.bad  { color: var(--danger); }
-
-.result-stat-label {
-  font-size: 11px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-top: 4px;
-}
-
-/* ============================================================
-   КНОПКИ
-   ============================================================ */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 13px 22px;
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius);
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all var(--transition);
-  text-decoration: none;
-  letter-spacing: -0.1px;
-}
-
-.btn:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 8px 20px var(--accent-soft); }
-.btn:active { transform: translateY(0); }
-
-.btn.secondary {
-  background: var(--surface);
-  color: var(--text);
-  border: 1px solid var(--border);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-.btn.secondary:hover { background: var(--surface-hover); border-color: var(--border-strong); box-shadow: var(--shadow); }
-
-.btn.ghost { background: transparent; color: var(--text-dim); border: 1px solid transparent; }
-.btn.ghost:hover { background: var(--surface); color: var(--text); }
-
-.btn.danger { background: var(--danger); }
-.btn.danger:hover { background: #dc2626; box-shadow: 0 8px 20px var(--danger-soft); }
-
-.btn.full { width: 100%; }
-
-.btn-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
-
-/* ============================================================
-   НИЖНЯЯ НАВИГАЦИЯ
-   ============================================================ */
-.bottom-nav {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  background: var(--overlay);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-top: 1px solid var(--border);
-  padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
-  display: flex;
-  justify-content: space-around;
-  z-index: 100;
-  max-width: 720px;
-  margin: 0 auto;
-}
-
-.nav-item {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  padding: 8px 4px;
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: color var(--transition);
-  border-radius: 10px;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-}
-
-.nav-item:hover { color: var(--text); }
-.nav-item.active { color: var(--accent); }
-
-.nav-item svg { width: 22px; height: 22px; }
-
-/* ============================================================
-   ФОРМЫ
-   ============================================================ */
-.form-row {
-  display: grid;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-.form-row label {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.input, .select {
-  width: 100%;
-  padding: 12px 14px;
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-  outline: none;
-  transition: all var(--transition);
-  color: var(--text);
-  font-weight: 500;
-}
-
-.input:focus, .select:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-soft);
-}
-
-.select { cursor: pointer; appearance: none;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  padding-right: 36px;
-}
-
-/* Radio group */
-.radio-group { display: flex; gap: 8px; flex-wrap: wrap; }
-
-.radio-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: 100px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 600;
-  transition: all var(--transition);
-  color: var(--text-dim);
-}
-
-.radio-chip:hover { border-color: var(--border-strong); color: var(--text); }
-.radio-chip input { display: none; }
-.radio-chip.active {
-  border-color: var(--accent);
-  background: var(--accent-soft);
-  color: var(--accent);
-}
-
-/* Toggle switch */
-.toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  user-select: none;
-}
-
-.toggle input { display: none; }
-
-.toggle-track {
-  width: 44px;
-  height: 26px;
-  background: var(--border-strong);
-  border-radius: 100px;
-  position: relative;
-  transition: background 200ms;
-  flex-shrink: 0;
-}
-
-.toggle-thumb {
-  position: absolute;
-  top: 3px; left: 3px;
-  width: 20px; height: 20px;
-  background: #fff;
-  border-radius: 50%;
-  transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-.toggle input:checked + .toggle-track { background: var(--accent); }
-.toggle input:checked + .toggle-track .toggle-thumb { transform: translateX(18px); }
-
-/* ============================================================
-   СПИСКИ
-   ============================================================ */
-.list-section {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  margin-bottom: 16px;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-
-.list-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
-  border-bottom: 1px solid var(--border);
-  cursor: pointer;
-  transition: background var(--transition);
-  background: none;
-  border-left: none;
-  border-right: none;
-  border-top: none;
-  width: 100%;
-  text-align: left;
-  color: var(--text);
-  font-size: 14px;
-}
-
-.list-item:last-child { border-bottom: none; }
-.list-item:hover { background: var(--surface-hover); }
-
-.list-item-icon {
-  width: 34px; height: 34px;
-  border-radius: 10px;
-  background: var(--accent-soft);
-  color: var(--accent);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.list-item-icon svg { width: 17px; height: 17px; }
-.list-item-icon.danger { background: var(--danger-soft); color: var(--danger); }
-.list-item-icon.warning { background: var(--warning-soft); color: var(--warning); }
-.list-item-icon.success { background: var(--success-soft); color: var(--success); }
-
-.list-item-text { flex: 1; font-weight: 600; }
-.list-item-arrow { color: var(--text-muted); font-size: 18px; }
-
-/* ============================================================
-   ТАБЛИЦА
-   ============================================================ */
-.table-wrap {
-  overflow-x: auto;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-
-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-
-th, td {
-  padding: 10px 12px;
-  text-align: left;
-  border-bottom: 1px solid var(--border);
-}
-
-th {
-  font-weight: 700;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-size: 10px;
-  background: var(--surface-hover);
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
-
-tr:last-child td { border-bottom: none; }
-tr:hover td { background: var(--surface-hover); }
-
-.tag {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 100px;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-}
-
-.tag.new { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
-.tag.learning { background: var(--warning-soft); color: var(--warning); }
-.tag.young { background: var(--success-soft); color: var(--success); }
-.tag.mature { background: rgba(16, 185, 129, 0.25); color: #059669; }
-.tag.difficult { background: var(--danger-soft); color: var(--danger); }
-
-/* ============================================================
-   HERO (ЭКРАН ПРИВЕТСТВИЯ)
-   ============================================================ */
-.welcome {
-  text-align: center;
-  padding: 40px 20px;
-}
-
-.welcome-logo {
-  width: 96px; height: 96px;
-  margin: 0 auto 24px;
-  border-radius: 28px;
-  background: linear-gradient(135deg, var(--accent), var(--info));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 44px;
-  font-weight: 900;
-  color: #fff;
-  box-shadow: 0 20px 50px -10px var(--accent-soft);
-  overflow: hidden;
-  position: relative;
-}
-
-.welcome-logo::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.3), transparent 60%);
-  pointer-events: none;
-}
-
-.welcome-logo img { width: 100%; height: 100%; object-fit: cover; position: relative; z-index: 1; }
-
-.welcome h1 {
-  font-size: 30px;
-  font-weight: 800;
-  letter-spacing: -1px;
-  margin-bottom: 8px;
-}
-
-.welcome-sub {
-  color: var(--text-dim);
-  font-size: 15px;
-  margin-bottom: 32px;
-  line-height: 1.6;
-}
-
-/* ============================================================
-   УТИЛИТЫ
-   ============================================================ */
-.hidden { display: none !important; }
-
-.text-center { text-align: center; }
-.text-dim { color: var(--text-dim); }
-.text-muted { color: var(--text-muted); }
-.mb-4 { margin-bottom: 4px; }
-.mb-8 { margin-bottom: 8px; }
-.mb-16 { margin-bottom: 16px; }
-.mb-24 { margin-bottom: 24px; }
-.mt-16 { margin-top: 16px; }
-.mt-24 { margin-top: 24px; }
-
-h2.section-title {
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: -0.3px;
-  margin-bottom: 12px;
-}
-
-.divider {
-  height: 1px;
-  background: var(--border);
-  margin: 20px 0;
-}
-
-/* Empty state */
-.empty {
-  text-align: center;
-  padding: 40px 20px;
-  color: var(--text-muted);
-  font-size: 14px;
-}
-
-.empty svg { width: 40px; height: 40px; opacity: 0.4; margin-bottom: 12px; }
-
-/* Loading */
-.spinner {
-  width: 20px; height: 20px;
-  border: 2px solid var(--border);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* Chart bars */
-.chart {
-  display: flex;
-  align-items: flex-end;
-  gap: 4px;
-  height: 100px;
-  padding: 12px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-}
-
-.chart-bar {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.chart-bar-fill {
-  width: 100%;
-  background: linear-gradient(180deg, var(--accent), var(--info));
-  border-radius: 4px 4px 0 0;
-  min-height: 2px;
-  transition: height 400ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.chart-bar-label {
-  font-size: 9px;
-  color: var(--text-muted);
-  font-weight: 600;
-}
-
-/* Streak badge in top-bar */
-.streak-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 6px 10px;
-  background: var(--warning-soft);
-  border: 1px solid rgba(245, 158, 11, 0.3);
-  border-radius: 100px;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--warning);
-  white-space: nowrap;
-}
-
-.streak-badge svg { width: 14px; height: 14px; }
-
-/* Install banner */
-.install-banner {
-  background: linear-gradient(135deg, var(--accent), #8b5cf6);
-  color: #fff;
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  box-shadow: 0 10px 30px -10px var(--accent-soft);
-}
-
-.install-banner .text { flex: 1; font-size: 13px; line-height: 1.4; }
-.install-banner button {
-  background: #fff;
-  color: var(--accent);
-  border: none;
-  padding: 8px 14px;
-  border-radius: 100px;
-  font-weight: 700;
-  font-size: 12px;
-  cursor: pointer;
-  transition: transform 150ms;
-}
-.install-banner button:active { transform: scale(0.95); }
-.install-banner .close-btn {
-  background: transparent;
-  color: #fff;
-  font-size: 18px;
-  padding: 4px 8px;
-}
-
-/* Reminder status */
-.status-banner {
-  padding: 12px 16px;
-  border-radius: var(--radius);
-  font-size: 13px;
-  margin-bottom: 16px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.status-banner.ok { background: var(--success-soft); color: var(--success); }
-.status-banner.warn { background: var(--warning-soft); color: var(--warning); }
-.status-banner.off { background: var(--surface-hover); color: var(--text-muted); }
-
-/* Logo uploader */
-.logo-preview {
-  width: 80px; height: 80px;
-  border-radius: 20px;
-  background: linear-gradient(135deg, var(--accent), var(--info));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 32px;
-  font-weight: 900;
-  color: #fff;
-  margin: 0 auto 12px;
-  overflow: hidden;
-  box-shadow: var(--shadow);
-}
-
-.logo-preview img { width: 100%; height: 100%; object-fit: cover; }
-
-/* ============================================================
-   АДАПТИВ
-   ============================================================ */
-@media (max-width: 420px) {
-  .question-text { font-size: 26px; }
-  .flashcard-word { font-size: 26px; }
-  .welcome h1 { font-size: 24px; }
-  .result-title { font-size: 22px; }
-  .action-tile { padding: 14px; min-height: 110px; }
-  .tile-title { font-size: 14px; }
-  .hero-title { font-size: 19px; }
-}
-
-@media (min-width: 640px) {
-  .action-grid { grid-template-columns: repeat(3, 1fr); }
-  .action-tile.wide { grid-column: span 1; }
-  .action-tile { min-height: 140px; }
-}
-
-/* Отступ для нижней навигации */
-@media (max-width: 640px) {
-  .app { padding-bottom: 120px; }
-}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    padding: 20px; color: #fff;
+    padding-top: max(20px, env(safe-area-inset-top));
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
+  }
+  .container {
+    background: #fff; color: #222; border-radius: 16px; padding: 24px;
+    max-width: 860px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    max-height: 95vh; overflow-y: auto;
+  }
+  h1 { font-size: 22px; margin-bottom: 8px; text-align: center; }
+  h2 { font-size: 20px; margin-bottom: 16px; }
+  .subtitle { text-align: center; color: #666; font-size: 14px; margin-bottom: 20px; }
+
+  .home-top {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 16px; gap: 8px;
+  }
+  .deck-switcher {
+    display: flex; align-items: center; gap: 6px;
+    background: #f0f4ff; border-radius: 10px; padding: 6px 10px;
+    flex: 1; cursor: pointer; border: 2px solid transparent; transition: border-color 0.15s;
+  }
+  .deck-switcher:hover { border-color: #2a5298; }
+  .deck-switcher .deck-name {
+    font-weight: 600; color: #2a5298; flex: 1;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .deck-switcher .deck-count { font-size: 13px; color: #666; }
+  .deck-switcher .arrow { color: #2a5298; font-size: 12px; }
+  .icon-menu-btn {
+    background: #f0f4ff; border: none; border-radius: 10px;
+    padding: 10px 14px; font-size: 18px; cursor: pointer;
+    color: #2a5298; transition: background 0.15s;
+  }
+  .icon-menu-btn:hover { background: #dbe6ff; }
+
+  .deck-header { text-align: center; margin-bottom: 20px; }
+  .deck-header h1 { font-size: 22px; margin-bottom: 6px; }
+  .deck-header .subtitle { font-size: 13px; margin-bottom: 0; }
+
+  .big-actions { display: grid; gap: 10px; }
+  .big-actions button {
+    padding: 18px; font-size: 16px; border: 2px solid #2a5298;
+    background: #fff; color: #2a5298; border-radius: 12px;
+    cursor: pointer; transition: all 0.15s; font-weight: 600;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .big-actions button:hover:not(:disabled) { background: #2a5298; color: #fff; }
+  .big-actions button:disabled { opacity: 0.4; cursor: not-allowed; }
+  .big-actions button.primary { background: #2a5298; color: #fff; }
+  .big-actions button.primary:hover:not(:disabled) { background: #1e3c72; }
+  .big-actions button.difficult { border-color: #e74c3c; color: #e74c3c; }
+  .big-actions button.difficult:hover:not(:disabled) { background: #e74c3c; color: #fff; }
+  .big-actions .btn-count { font-size: 13px; font-weight: 400; opacity: 0.75; }
+
+  .series-box {
+    background: linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%);
+    color: #fff; border-radius: 12px; padding: 14px;
+    text-align: center; margin-bottom: 16px;
+  }
+  .series-box .num { font-size: 26px; font-weight: 700; }
+  .series-box .label { font-size: 12px; opacity: 0.9; }
+
+  .daily-goal { text-align: center; font-size: 13px; color: #666; margin-top: 16px; }
+  .daily-goal .bar { height: 6px; background: #eee; border-radius: 3px; margin-top: 6px; overflow: hidden; }
+  .daily-goal .bar-fill { height: 100%; background: #2ecc71; transition: width 0.3s; }
+
+  .more-menu { display: grid; gap: 10px; margin-top: 16px; }
+  .more-menu button {
+    padding: 14px 18px; font-size: 15px; border: none; background: #f5f7fa;
+    color: #333; border-radius: 10px; cursor: pointer; text-align: left;
+    display: flex; justify-content: space-between; align-items: center;
+    transition: background 0.15s;
+  }
+  .more-menu button:hover { background: #e8ecf2; }
+  .more-menu button.danger { color: #e74c3c; }
+  .more-menu button.danger:hover { background: #fdecea; }
+
+  .deck-list { display: grid; gap: 10px; margin-top: 12px; }
+  .deck-item {
+    padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 10px;
+    display: flex; justify-content: space-between; align-items: center; gap: 8px;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .deck-item:hover { border-color: #2a5298; background: #f0f4ff; }
+  .deck-item.active { border-color: #2a5298; background: #e8efff; }
+  .deck-item.system { background: #f8f9fc; }
+  .deck-item .info { flex: 1; min-width: 0; }
+  .deck-item .info .name { font-weight: 600; font-size: 15px; }
+  .deck-item .info .meta { font-size: 12px; color: #888; margin-top: 4px; }
+  .deck-item .badge-system {
+    display: inline-block; font-size: 10px; background: #2a5298;
+    color: #fff; padding: 2px 6px; border-radius: 4px;
+    margin-left: 6px; vertical-align: middle;
+  }
+  .deck-item .actions { display: flex; gap: 4px; }
+  .icon-btn {
+    background: none; border: none; cursor: pointer; padding: 6px 8px;
+    font-size: 15px; border-radius: 6px; transition: background 0.15s;
+  }
+  .icon-btn:hover { background: #eee; }
+  .icon-btn.danger:hover { background: #fdecea; }
+
+  .progress { display: flex; justify-content: space-between; font-size: 14px; color: #666; margin-bottom: 12px; }
+  .progress-bar { height: 6px; background: #eee; border-radius: 3px; overflow: hidden; margin-bottom: 20px; }
+  .progress-bar-fill { height: 100%; background: #2a5298; width: 0%; transition: width 0.3s; }
+  .question { font-size: 28px; font-weight: 600; text-align: center; margin: 20px 0; min-height: 40px; }
+  .question .dir-badge {
+    display: inline-block; font-size: 11px; color: #fff; background: #2a5298;
+    padding: 3px 10px; border-radius: 10px; margin-bottom: 10px; letter-spacing: 0.5px;
+  }
+  .options { display: grid; gap: 10px; }
+  .option {
+    padding: 14px; border: 2px solid #e0e0e0; border-radius: 10px;
+    background: #fafafa; cursor: pointer; font-size: 16px;
+    text-align: left; transition: all 0.15s; color: #222;
+  }
+  .option:hover:not(:disabled) { border-color: #2a5298; background: #f0f4ff; }
+  .option.correct { border-color: #2ecc71; background: #e8f8ef; color: #1a7a42; }
+  .option.wrong { border-color: #e74c3c; background: #fdecea; color: #a3281c; }
+  .option:disabled { cursor: default; }
+
+  .typing-wrap { display: grid; gap: 10px; }
+  .typing-input {
+    padding: 16px; font-size: 18px; border: 2px solid #e0e0e0;
+    border-radius: 10px; font-family: inherit; outline: none; text-align: center;
+  }
+  .typing-input:focus { border-color: #2a5298; }
+  .typing-input.correct { border-color: #2ecc71; background: #e8f8ef; }
+  .typing-input.wrong { border-color: #e74c3c; background: #fdecea; }
+  .typing-feedback { text-align: center; font-size: 15px; min-height: 22px; }
+  .typing-feedback.correct { color: #1a7a42; }
+  .typing-feedback.wrong { color: #a3281c; }
+
+  .card {
+    background: #f8f9fc; border-radius: 14px; padding: 40px 24px;
+    text-align: center; margin: 16px 0; min-height: 200px;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    cursor: pointer; user-select: none; transition: background 0.2s;
+  }
+  .card:hover { background: #eef2fa; }
+  .card .front { font-size: 30px; font-weight: 600; }
+  .card .back { font-size: 26px; color: #2a5298; margin-top: 18px; font-weight: 600; }
+  .card .hint { font-size: 13px; color: #999; margin-top: 18px; }
+  .card .badge { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+  .rating { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 14px; }
+  .rating button {
+    padding: 14px 8px; border: none; border-radius: 10px;
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    color: #fff; transition: transform 0.1s;
+  }
+  .rating button:active { transform: scale(0.96); }
+  .rating .again { background: #e74c3c; }
+  .rating .hard  { background: #f39c12; }
+  .rating .good  { background: #2ecc71; }
+  .rating .easy  { background: #3498db; }
+  .rating .interval { display: block; font-size: 11px; opacity: 0.85; font-weight: 400; margin-top: 4px; }
+
+  .recall-box {
+    background: #f8f9fc; border-radius: 14px; padding: 28px 24px;
+    text-align: center; margin: 16px 0;
+  }
+  .recall-box .hint-text { color: #888; font-size: 14px; margin-bottom: 16px; }
+
+  .result { text-align: center; }
+  .result h2 { font-size: 24px; margin-bottom: 16px; }
+  .result p { font-size: 18px; margin-bottom: 20px; color: #555; }
+  .btn {
+    display: inline-block; padding: 12px 24px; background: #2a5298;
+    color: #fff; border: none; border-radius: 10px; font-size: 15px;
+    cursor: pointer; transition: background 0.15s; text-decoration: none; margin: 4px;
+  }
+  .btn:hover { background: #1e3c72; }
+  .btn.secondary { background: #eee; color: #333; }
+  .btn.secondary:hover { background: #ddd; }
+  .btn.danger { background: #e74c3c; }
+  .btn.danger:hover { background: #c0392b; }
+  .btn.small { padding: 6px 12px; font-size: 13px; }
+  .upload-area { text-align: center; padding: 24px 20px; }
+  .upload-area input[type="file"] { display: none; }
+  .upload-label {
+    display: inline-block; padding: 14px 28px; background: #2a5298;
+    color: #fff; border-radius: 10px; cursor: pointer; font-size: 16px; margin-bottom: 12px;
+  }
+  .upload-label:hover { background: #1e3c72; }
+  .hint { font-size: 13px; color: #888; margin-top: 10px; line-height: 1.5; }
+  .topbar {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px; font-size: 14px; color: #666;
+  }
+  .topbar button {
+    background: none; border: none; color: #2a5298;
+    cursor: pointer; font-size: 14px; padding: 4px 8px;
+  }
+  .topbar button:hover { text-decoration: underline; }
+
+  .form-row { display: grid; gap: 6px; margin-bottom: 12px; }
+  .form-row label { font-size: 13px; color: #555; font-weight: 600; }
+  .form-row input, .form-row select {
+    padding: 10px 12px; border: 2px solid #e0e0e0; border-radius: 8px;
+    font-size: 15px; outline: none; transition: border-color 0.15s; font-family: inherit;
+  }
+  .form-row input:focus, .form-row select:focus { border-color: #2a5298; }
+  .radio-group { display: flex; gap: 8px; flex-wrap: wrap; }
+  .radio-group label {
+    display: flex; align-items: center; gap: 6px; padding: 10px 14px;
+    border: 2px solid #e0e0e0; border-radius: 10px; cursor: pointer;
+    font-size: 14px; font-weight: 400; background: #fafafa; transition: all 0.15s;
+  }
+  .radio-group label:hover { border-color: #2a5298; }
+  .radio-group input { accent-color: #2a5298; }
+  .radio-group label.active { border-color: #2a5298; background: #f0f4ff; }
+
+  .table-wrap { overflow-x: auto; margin-top: 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid #eee; vertical-align: middle; }
+  th { background: #f8f9fc; font-weight: 600; color: #555; position: sticky; top: 0; z-index: 1; }
+  tr:hover td { background: #fafbff; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .tag.new { background: #e3f2fd; color: #1565c0; }
+  .tag.learning { background: #fff3e0; color: #e65100; }
+  .tag.young { background: #e8f5e9; color: #2e7d32; }
+  .tag.mature { background: #c8e6c9; color: #1b5e20; }
+  .tag.difficult { background: #ffebee; color: #c62828; }
+
+  .editor-toolbar {
+    display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+    margin-bottom: 12px; padding: 10px; background: #f8f9fc; border-radius: 10px;
+  }
+  .editor-toolbar input[type="text"] {
+    flex: 1; min-width: 160px; padding: 8px 12px;
+    border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px;
+  }
+  .editor-toolbar input[type="text"]:focus { border-color: #2a5298; outline: none; }
+  .editor-toolbar select {
+    padding: 8px 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; background: #fff;
+  }
+  .editor-toolbar button {
+    padding: 8px 14px; font-size: 13px; border: none; border-radius: 8px;
+    cursor: pointer; font-weight: 600; transition: background 0.15s;
+  }
+  .editor-toolbar button.primary { background: #2a5298; color: #fff; }
+  .editor-toolbar button.primary:hover { background: #1e3c72; }
+  .editor-toolbar button.neutral { background: #eee; color: #333; }
+  .editor-toolbar button.neutral:hover { background: #ddd; }
+  .editor-toolbar button.danger { background: #e74c3c; color: #fff; }
+  .editor-toolbar button.danger:hover { background: #c0392b; }
+  .editor-toolbar button:disabled { opacity: 0.4; cursor: not-allowed; }
+  .word-row.editing td { background: #fffbe6; }
+  .word-row input.edit-input {
+    width: 100%; padding: 6px 8px; border: 2px solid #2a5298;
+    border-radius: 6px; font-size: 13px; font-family: inherit;
+  }
+  .checkbox-col { width: 30px; text-align: center; }
+  .counter { font-size: 13px; color: #666; margin-left: auto; }
+  .empty-state { text-align: center; padding: 40px 20px; color: #888; font-size: 14px; }
+
+  .system-notice {
+    background: #e8efff; color: #2a5298; border-radius: 10px;
+    padding: 12px 16px; margin-bottom: 16px; font-size: 13px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .system-notice .icon { font-size: 18px; }
+
+  /* Уменьшенные иконки в "Импорт / экспорт" */
+  .io-actions {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;
+  }
+  .io-actions .btn, .io-actions .upload-label {
+    padding: 8px 14px; font-size: 13px; margin: 0;
+  }
+  .io-actions .upload-label { padding: 8px 14px; font-size: 13px; margin-bottom: 0; }
 </style>
 </head>
 <body>
-<div class="app" id="app"></div>
+<div class="container" id="app"></div>
 
 <script>
 /* =========================================================================
-   ИКОНКИ (SVG)
-   ========================================================================= */
-const ICONS = {
-  home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
-  decks: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
-  stats: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>',
-  settings: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>',
-  more: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>',
-  fire: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2c1 3 4 5 4 9a4 4 0 0 1-8 0c0-1 .5-2 1-3-2 1-3 3-3 5a6 6 0 0 0 12 0c0-5-4-8-6-11z"/></svg>',
-  target: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
-  cards: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/></svg>',
-  repeat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>',
-  edit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>',
-  upload: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>',
-  download: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
-  bell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>',
-  downloadApp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>',
-  trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>',
-  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
-  x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
-  chevron: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>',
-  back: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>',
-  plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
-  sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>',
-  moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
-  search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>',
-  image: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>',
-  refresh: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>',
-};
-
-/* =========================================================================
-   ХРАНИЛИЩЕ
+   МОДУЛЬ 1. ХРАНИЛИЩЕ
    ========================================================================= */
 const LS_DECKS    = 'av_decks_v2';
 const LS_WORDS    = 'av_words_v2';
@@ -1427,17 +301,18 @@ const LS_DIFFICULT= 'av_difficult_v2';
 const LS_SETTINGS = 'av_settings_v2';
 const LS_STATS    = 'av_stats_v2';
 const LS_REMIND   = 'av_reminder_v2';
-const LS_THEME    = 'av_theme_v2';
-const LS_LOGO     = 'av_logo_v2';
+const LS_SYSTEMS  = 'av_systems_v2'; // для хранения загруженных системных колод
+
+const SYSTEM_DECKS = [
+  { id: 'system-aviation-english', url: './aviation-english.json' },
+  { id: 'system-icao-alphabet',    url: './icao-alphabet.json' },
+];
 
 let decks = [];
 let activeDeckId = null;
 let wordsByDeck = {};
 let progressByDeck = {};
 let difficultByDeck = {};
-let theme = 'dark';
-let customLogo = null;   // data-URL загруженного логотипа
-
 let settings = {
   newPerDay: 20, maxInterval: 365, easyBonus: 1.3, hardFactor: 0.6,
   startingEase: 2.5, direction: 'en-ru', recallFirst: true,
@@ -1445,8 +320,8 @@ let settings = {
   retryMistakes: true, dailyGoal: 20, prioritizeHard: true,
   difficultToExit: 2,
 };
-let stats = { streak: 0, lastStudyDate: null, dailyCounts: {} };
-let reminder = { enabled: false, time: '19:00', lastShown: null, installBannerClosed: false };
+let stats = { series: 0, lastStudyDate: null, dailyCounts: {} };
+let reminder = { enabled: false, time: '19:00', lastShown: null };
 
 function saveDecks() { localStorage.setItem(LS_DECKS, JSON.stringify({ decks, activeDeckId })); }
 function saveWordsMap() { localStorage.setItem(LS_WORDS, JSON.stringify(wordsByDeck)); }
@@ -1455,14 +330,9 @@ function saveDifficultMap() { localStorage.setItem(LS_DIFFICULT, JSON.stringify(
 function saveSettings() { localStorage.setItem(LS_SETTINGS, JSON.stringify(settings)); }
 function saveStats() { localStorage.setItem(LS_STATS, JSON.stringify(stats)); }
 function saveReminder() { localStorage.setItem(LS_REMIND, JSON.stringify(reminder)); }
-function saveTheme() { localStorage.setItem(LS_THEME, theme); }
-function saveLogo() {
-  if (customLogo) localStorage.setItem(LS_LOGO, customLogo);
-  else localStorage.removeItem(LS_LOGO);
-}
 function saveAll() {
   saveDecks(); saveWordsMap(); saveProgressMap(); saveDifficultMap();
-  saveSettings(); saveStats(); saveReminder(); saveTheme(); saveLogo();
+  saveSettings(); saveStats(); saveReminder();
 }
 
 function loadAll() {
@@ -1475,25 +345,15 @@ function loadAll() {
   try { progressByDeck = JSON.parse(localStorage.getItem(LS_PROGRESS) || '{}'); } catch { progressByDeck = {}; }
   try { difficultByDeck = JSON.parse(localStorage.getItem(LS_DIFFICULT) || '{}'); } catch { difficultByDeck = {}; }
   try { settings = Object.assign(settings, JSON.parse(localStorage.getItem(LS_SETTINGS) || '{}')); } catch {}
-  try { stats = Object.assign(stats, JSON.parse(localStorage.getItem(LS_STATS) || '{}')); } catch {}
+  try {
+    const st = JSON.parse(localStorage.getItem(LS_STATS) || '{}');
+    // миграция со старого поля streak
+    if (st.streak !== undefined && st.series === undefined) st.series = st.streak;
+    stats = Object.assign(stats, st);
+  } catch {}
   try { reminder = Object.assign(reminder, JSON.parse(localStorage.getItem(LS_REMIND) || '{}')); } catch {}
-  try { theme = localStorage.getItem(LS_THEME) || 'dark'; } catch { theme = 'dark'; }
-  try { customLogo = localStorage.getItem(LS_LOGO) || null; } catch { customLogo = null; }
-  applyTheme();
 }
 
-function applyTheme() {
-  document.documentElement.setAttribute('data-theme', theme);
-  const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute('content', theme === 'dark' ? '#0a0e27' : '#f8fafc');
-}
-
-function toggleTheme() {
-  theme = theme === 'dark' ? 'light' : 'dark';
-  applyTheme(); saveTheme();
-}
-
-/* ---- Хелперы колод ---- */
 function getWords(deckId = activeDeckId) { return wordsByDeck[deckId] || []; }
 function setWords(arr, deckId = activeDeckId) { wordsByDeck[deckId] = arr; saveWordsMap(); }
 function getProgress(deckId = activeDeckId) {
@@ -1506,10 +366,61 @@ function getDifficult(deckId = activeDeckId) {
 }
 function deckName(id) { const d = decks.find(x => x.id === id); return d ? d.name : '—'; }
 function activeDeck() { return decks.find(d => d.id === activeDeckId); }
+function isSystemDeck(id) { const d = decks.find(x => x.id === id); return d && d.system === true; }
 function uid() { return 'd' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
 
 /* =========================================================================
-   УТИЛИТЫ
+   МОДУЛЬ 1.5. ЗАГРУЗКА СИСТЕМНЫХ КОЛОД
+   ========================================================================= */
+async function loadSystemDecks() {
+  // Найдём все системные колоды, которых нет в decks
+  for (const sd of SYSTEM_DECKS) {
+    const existing = decks.find(d => d.id === sd.id);
+    if (existing) {
+      // Колода есть — проверим обновление слов
+      try {
+        const res = await fetch(sd.url + '?t=' + Date.now(), { cache: 'no-store' });
+        if (!res.ok) continue;
+        const data = await res.json();
+        if (data && Array.isArray(data.words)) {
+          // Сравниваем по количеству — если изменилось, обновляем список слов,
+          // но прогресс оставляем (привязка по en)
+          const currentCount = (wordsByDeck[sd.id] || []).length;
+          if (currentCount !== data.words.length) {
+            wordsByDeck[sd.id] = data.words.map(w => ({ en: w.en, ru: w.ru, created: w.created || todayStr() }));
+            saveWordsMap();
+          }
+          // Обновим название, если изменилось
+          if (data.name && existing.name !== data.name) {
+            existing.name = data.name; saveDecks();
+          }
+        }
+      } catch (e) { /* нет интернета — работаем с кэшем */ }
+    } else {
+      // Новая системная колода — загрузим
+      try {
+        const res = await fetch(sd.url + '?t=' + Date.now(), { cache: 'no-store' });
+        if (!res.ok) continue;
+        const data = await res.json();
+        if (!data || !Array.isArray(data.words)) continue;
+        decks.push({
+          id: sd.id,
+          name: data.name || sd.id,
+          createdAt: todayStr(),
+          system: true,
+        });
+        wordsByDeck[sd.id] = data.words.map(w => ({ en: w.en, ru: w.ru, created: w.created || todayStr() }));
+        if (!progressByDeck[sd.id]) progressByDeck[sd.id] = {};
+        if (!difficultByDeck[sd.id]) difficultByDeck[sd.id] = {};
+        saveAll();
+      } catch (e) { /* пропускаем */ }
+    }
+  }
+  saveAll();
+}
+
+/* =========================================================================
+   МОДУЛЬ 2. УТИЛИТЫ
    ========================================================================= */
 function shuffle(arr) {
   const a = arr.slice();
@@ -1548,51 +459,9 @@ function answerMatches(input, correct) {
   const parts = b.split(/[,/]/).map(s => s.trim()).filter(Boolean);
   return parts.includes(a);
 }
-function greeting() {
-  const h = new Date().getHours();
-  if (h < 5) return 'Доброй ночи';
-  if (h < 12) return 'Доброе утро';
-  if (h < 18) return 'Добрый день';
-  return 'Добрый вечер';
-}
 
 /* =========================================================================
-   ЛОГОТИП
-   ========================================================================= */
-function logoHTML(size = 40) {
-  if (customLogo) {
-    return `<div class="logo-slot" style="width:${size}px;height:${size}px;"><img src="${customLogo}" alt="logo"></div>`;
-  }
-  return `<div class="logo-slot" style="width:${size}px;height:${size}px;">A</div>`;
-}
-function welcomeLogoHTML() {
-  if (customLogo) {
-    return `<div class="welcome-logo"><img src="${customLogo}" alt="logo"></div>`;
-  }
-  return `<div class="welcome-logo">A</div>`;
-}
-function handleLogoUpload(file) {
-  if (!file) return;
-  if (file.size > 500 * 1024) {
-    alert('Файл слишком большой. Максимум 500 КБ.');
-    return;
-  }
-  const reader = new FileReader();
-  reader.onload = e => {
-    customLogo = e.target.result;
-    saveLogo();
-    renderSettings();
-  };
-  reader.readAsDataURL(file);
-}
-function removeLogo() {
-  customLogo = null;
-  saveLogo();
-  renderSettings();
-}
-
-/* =========================================================================
-   ИМПОРТ / ЭКСПОРТ
+   МОДУЛЬ 3. ИМПОРТ / ЭКСПОРТ
    ========================================================================= */
 function parseAny(text) {
   const lines = text.split(/\r?\n/); const result = [];
@@ -1648,15 +517,9 @@ function toCSV(rows) {
   return 'en,ru\n' + rows.map(r => esc(r.en) + ',' + esc(r.ru)).join('\n');
 }
 function toTSV(rows) { return rows.map(r => r.en + '\t' + r.ru).join('\n'); }
-function download(content, filename, mime = 'text/plain') {
-  const blob = new Blob([content], { type: mime + ';charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url; a.download = filename; a.click();
-  URL.revokeObjectURL(url);
-}
 
 /* =========================================================================
-   SRS
+   МОДУЛЬ 4. SRS
    ========================================================================= */
 function getCard(en, deckId = activeDeckId) {
   const prog = getProgress(deckId);
@@ -1718,7 +581,7 @@ function difficultyScore(en, deckId = activeDeckId) {
 }
 
 /* =========================================================================
-   СЛОЖНЫЕ СЛОВА
+   МОДУЛЬ 5. СЛОЖНЫЕ СЛОВА
    ========================================================================= */
 function markDifficult(en, deckId = activeDeckId) {
   const diff = getDifficult(deckId);
@@ -1742,16 +605,16 @@ function difficultWords(deckId = activeDeckId) {
 }
 
 /* =========================================================================
-   СТАТИСТИКА
+   МОДУЛЬ 6. СТАТИСТИКА / СЕРИЯ ДНЕЙ
    ========================================================================= */
-function updateStreak() {
+function updateSeries() {
   const today = todayStr();
   if (stats.lastStudyDate === today) return;
   if (stats.lastStudyDate) {
     const diff = daysBetween(stats.lastStudyDate, today);
-    if (diff === 1) stats.streak += 1;
-    else if (diff > 1) stats.streak = 1;
-  } else stats.streak = 1;
+    if (diff === 1) stats.series += 1;
+    else if (diff > 1) stats.series = 1;
+  } else stats.series = 1;
   stats.lastStudyDate = today;
   saveStats();
 }
@@ -1765,7 +628,7 @@ function incrementDailyCount(n = 1) {
 function todayCount() { return stats.dailyCounts[todayStr()] || 0; }
 
 /* =========================================================================
-   ВАРИАНТЫ ОТВЕТОВ
+   МОДУЛЬ 7. ПОДБОР ВАРИАНТОВ
    ========================================================================= */
 function pickDistractors(correct, pool, count = 3) {
   const candidates = pool.filter(w => !(w.en === correct.en && w.ru === correct.ru));
@@ -1790,220 +653,39 @@ function makeOptions(correct, direction, pool) {
 }
 
 /* =========================================================================
-   НАПОМИНАНИЯ
-   ========================================================================= */
-let reminderTimer = null;
-function notificationsSupported() { return 'Notification' in window; }
-function notificationPermission() {
-  return notificationsSupported() ? Notification.permission : 'unsupported';
-}
-function requestNotificationPermission() {
-  return new Promise(resolve => {
-    if (!notificationsSupported()) return resolve('unsupported');
-    if (Notification.permission === 'granted') return resolve('granted');
-    if (Notification.permission === 'denied') return resolve('denied');
-    Notification.requestPermission().then(resolve);
-  });
-}
-function showNotification(title, body) {
-  if (notificationPermission() !== 'granted') return false;
-  try {
-    if (navigator.serviceWorker && navigator.serviceWorker.controller) {
-      navigator.serviceWorker.ready.then(reg => {
-        reg.showNotification(title, {
-          body, tag: 'aviation-reminder', renotify: true, vibrate: [100, 50, 100],
-          data: { url: './' }
-        });
-      });
-    } else {
-      new Notification(title, { body, tag: 'aviation-reminder' });
-    }
-    return true;
-  } catch (e) { return false; }
-}
-function startReminderLoop() {
-  if (reminderTimer) clearInterval(reminderTimer);
-  reminderTimer = setInterval(checkReminder, 30000);
-  checkReminder();
-}
-function checkReminder() {
-  if (!reminder.enabled) return;
-  if (notificationPermission() !== 'granted') return;
-  const now = new Date();
-  const current = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
-  const today = todayStr();
-  if (stats.lastStudyDate === today) return;
-  if (reminder.lastShown === today) return;
-  if (current < reminder.time) return;
-  const due = dueWords().length;
-  const body = due > 0 ? `У вас ${due} слов к повторению. Не теряйте стрик! 🔥` : `Пора позаниматься! 🔥`;
-  if (showNotification('✈️ Время учить английский', body)) {
-    reminder.lastShown = today;
-    saveReminder();
-  }
-}
-function testNotification() {
-  if (!showNotification('✈️ Тестовое уведомление', 'Если вы это видите — напоминания работают!')) {
-    alert('Не удалось показать уведомление. Проверьте разрешение.');
-  }
-}
-
-/* =========================================================================
-   PWA
-   ========================================================================= */
-let deferredInstallPrompt = null;
-function initPWA() {
-  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js').catch(err => console.warn('SW:', err));
-    });
-  }
-  window.addEventListener('beforeinstallprompt', e => {
-    e.preventDefault();
-    deferredInstallPrompt = e;
-  });
-  window.addEventListener('appinstalled', () => { deferredInstallPrompt = null; });
-}
-function canInstallPWA() { return !!deferredInstallPrompt; }
-function isStandalone() {
-  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-}
-function promptInstall() {
-  if (!deferredInstallPrompt) {
-    alert('Установка недоступна.\n\nВозможные причины:\n• Открыто через file:// (нужен локальный сервер или HTTPS)\n• Браузер не поддерживает PWA\n• Уже установлено\n\nВ Chrome/Edge: меню → «Установить приложение».');
-    return;
-  }
-  deferredInstallPrompt.prompt();
-  deferredInstallPrompt.userChoice.then(() => { deferredInstallPrompt = null; });
-}
-
-/* =========================================================================
-   РЕНДЕР — КОРНЕВОЙ КОНТЕЙНЕР
+   МОДУЛЬ 8. ЭКРАН: ЗАГРУЗКА
    ========================================================================= */
 const app = document.getElementById('app');
 
-function topBar({ back, title, showTheme = true, showStreak = false } = {}) {
-  const backBtn = back ? `<button class="icon-btn" id="navBack">${ICONS.back}</button>` : '';
-  const logoPart = !back ? `
-    <div class="brand">
-      ${logoHTML(40)}
-      <div class="brand-text">
-        <div class="brand-name">${title || 'AeroLex'}</div>
-        <div class="brand-sub">Авиационный английский</div>
-      </div>
-    </div>
-  ` : `<div style="flex:1;font-weight:700;font-size:15px;">${title || ''}</div>`;
-
-  const streakPart = showStreak && stats.streak > 0
-    ? `<div class="streak-badge">${ICONS.fire} ${stats.streak}</div>` : '';
-
-  const themeBtn = showTheme
-    ? `<button class="icon-btn" id="navTheme" title="Тема">${theme === 'dark' ? ICONS.sun : ICONS.moon}</button>` : '';
-
-  const moreBtn = !back ? `<button class="icon-btn" id="navMore">${ICONS.more}</button>` : '';
-
-  return `
-    <div class="top-bar">
-      ${backBtn}
-      ${logoPart}
-      ${streakPart}
-      ${themeBtn}
-      ${moreBtn}
-    </div>
-  `;
-}
-
-function bindTopBar({ onBack, onMore } = {}) {
-  const b = document.getElementById('navBack');
-  if (b && onBack) b.addEventListener('click', onBack);
-  const t = document.getElementById('navTheme');
-  if (t) t.addEventListener('click', () => { toggleTheme(); rerender(); });
-  const m = document.getElementById('navMore');
-  if (m && onMore) m.addEventListener('click', onMore);
-}
-
-function bottomNav(active) {
-  const items = [
-    { id: 'home', label: 'Главная', icon: ICONS.home, onClick: renderHome },
-    { id: 'decks', label: 'Колоды', icon: ICONS.decks, onClick: renderDeckPicker },
-    { id: 'stats', label: 'Статистика', icon: ICONS.stats, onClick: renderStats },
-    { id: 'more', label: 'Ещё', icon: ICONS.more, onClick: renderMore },
-  ];
-  return `
-    <div class="bottom-nav">
-      ${items.map(it => `
-        <button class="nav-item ${active === it.id ? 'active' : ''}" data-nav="${it.id}">
-          ${it.icon}
-          <span>${it.label}</span>
-        </button>
-      `).join('')}
-    </div>
-  `;
-}
-function bindBottomNav() {
-  document.querySelectorAll('[data-nav]').forEach(el => {
-    el.addEventListener('click', () => {
-      const id = el.dataset.nav;
-      if (id === 'home') renderHome();
-      else if (id === 'decks') renderDeckPicker();
-      else if (id === 'stats') renderStats();
-      else if (id === 'more') renderMore();
-    });
-  });
-}
-
-// Простой роутер перерисовки
-let lastRender = null;
-function rerender() { if (lastRender) lastRender(); }
-
-/* =========================================================================
-   ЭКРАН ПРИВЕТСТВИЯ
-   ========================================================================= */
 function renderWelcome() {
-  lastRender = renderWelcome;
   app.innerHTML = `
-    <div class="welcome">
-      ${welcomeLogoHTML()}
-      <h1>Авиационный английский</h1>
-      <p class="welcome-sub">Викторина, SRS-карточки и работа над ошибками.<br>Всё, что нужно для системного изучения терминов.</p>
-
-      <div class="card" style="text-align:left;padding:20px;">
-        <h2 class="section-title">Начнём</h2>
-        <p class="text-dim mb-16" style="font-size:13px;">Загрузите файл со словами или создайте пустую колоду и добавляйте слова вручную.</p>
-        <button class="btn full mb-8" id="btnLoadFile">
-          ${ICONS.upload} Загрузить файл
-        </button>
-        <button class="btn secondary full" id="btnCreateEmpty">
-          ${ICONS.plus} Создать пустую колоду
-        </button>
-        <p class="text-muted text-center mt-16" style="font-size:12px;">
-          TXT · CSV · TSV
-        </p>
-      </div>
+    <h1>✈️ AeroEN</h1>
+    <p class="subtitle">Авиационный английский — викторина + SRS-карточки</p>
+    <div class="upload-area">
+      <label class="upload-label" for="fileInput">📁 Загрузить файл со словами</label>
+      <input type="file" id="fileInput" accept=".txt,.csv,.tsv">
+      <p class="hint">TXT / CSV / TSV — english&lt;TAB&gt;russian или english,russian.</p>
+      <p class="hint" style="margin-top:16px;">
+        Или <button class="btn secondary" id="btnCreateEmpty" style="padding:8px 14px;font-size:13px;">создать пустую колоду</button>
+      </p>
     </div>
   `;
-  document.getElementById('btnLoadFile').addEventListener('click', () => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.txt,.csv,.tsv';
-    input.addEventListener('change', e => {
-      const file = e.target.files[0]; if (!file) return;
-      const reader = new FileReader();
-      reader.onload = ev => {
-        const text = ev.target.result;
-        const parsed = file.name.toLowerCase().endsWith('.csv') ? parseCSV(text) : parseAny(text);
-        if (!parsed || parsed.length < 1) { alert('Не найдено ни одного слова.'); return; }
-        const name = prompt('Название колоды:', file.name.replace(/\.[^.]+$/, '') || 'Моя колода');
-        if (!name) return;
-        createDeck(name, parsed);
-        renderHome();
-      };
-      reader.readAsText(file, 'UTF-8');
-    });
-    input.click();
+  document.getElementById('fileInput').addEventListener('change', e => {
+    const file = e.target.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const text = ev.target.result;
+      const parsed = file.name.toLowerCase().endsWith('.csv') ? parseCSV(text) : parseAny(text);
+      if (parsed.length < 1) { alert('Не найдено ни одного слова.'); return; }
+      const name = prompt('Название колоды:', file.name.replace(/\.[^.]+$/, '') || 'Новая колода');
+      if (!name) return;
+      createDeck(name, parsed);
+      renderHome();
+    };
+    reader.readAsText(file, 'UTF-8');
   });
   document.getElementById('btnCreateEmpty').addEventListener('click', () => {
-    const name = prompt('Название колоды:', 'Моя колода');
+    const name = prompt('Название колоды:', 'Новая колода');
     if (!name) return;
     createDeck(name, []);
     renderHome();
@@ -2012,7 +694,7 @@ function renderWelcome() {
 
 function createDeck(name, words = []) {
   const id = uid();
-  decks.push({ id, name, createdAt: todayStr() });
+  decks.push({ id, name, createdAt: todayStr(), system: false });
   wordsByDeck[id] = words;
   progressByDeck[id] = {};
   difficultByDeck[id] = {};
@@ -2022,10 +704,9 @@ function createDeck(name, words = []) {
 }
 
 /* =========================================================================
-   ГЛАВНЫЙ ЭКРАН
+   МОДУЛЬ 9. ГЛАВНЫЙ ЭКРАН
    ========================================================================= */
 function renderHome() {
-  lastRender = renderHome;
   if (decks.length === 0) return renderWelcome();
   if (!activeDeck()) activeDeckId = decks[0].id;
 
@@ -2035,114 +716,75 @@ function renderHome() {
   const learned = words.filter(w => ['young','mature'].includes(wordStatus(w.en))).length;
   const todayN = todayCount();
   const goalPct = Math.min(100, Math.round(todayN / settings.dailyGoal * 100));
-
-  const showInstall = canInstallPWA() && !isStandalone() && !reminder.installBannerClosed;
+  const sys = isSystemDeck(activeDeckId);
 
   app.innerHTML = `
-    ${topBar({ title: 'AeroLex', showStreak: true, onMore: renderMore })}
-    ${showInstall ? `
-      <div class="install-banner" id="installBanner">
-        <span style="font-size:22px;">📲</span>
-        <div class="text">Установите приложение на телефон — работает офлайн.</div>
-        <button id="btnInstall">ОК</button>
-        <button class="close-btn" id="btnInstallClose">✕</button>
+    <div class="home-top">
+      <div class="deck-switcher" id="deckSwitcher">
+        <span style="font-size:18px;">📚</span>
+        <span class="deck-name">${escapeHtml(deckName(activeDeckId))}</span>
+        <span class="deck-count">${words.length} слов</span>
+        <span class="arrow">▼</span>
+      </div>
+      <button class="icon-menu-btn" id="btnMore" title="Ещё">⚙️</button>
+    </div>
+
+    ${stats.series > 0 ? `
+      <div class="series-box">
+        <div class="num">🔥 ${stats.series}</div>
+        <div class="label">${stats.series === 1 ? 'день подряд' : 'дней подряд'}</div>
       </div>
     ` : ''}
 
-    <div class="deck-selector" id="deckSelector">
-      <div class="deck-selector-icon">${ICONS.decks}</div>
-      <div class="deck-selector-info">
-        <div class="deck-selector-name">${escapeHtml(deckName(activeDeckId))}</div>
-        <div class="deck-selector-meta">${words.length} слов</div>
-      </div>
-      <div class="deck-selector-arrow">${ICONS.chevron}</div>
+    <div class="deck-header">
+      <p class="subtitle">
+        К повторению: <b>${due}</b> · Освоено: <b>${learned}</b> · Всего: <b>${words.length}</b>
+      </p>
     </div>
 
-    <div class="hero">
-      <div class="hero-content">
-        <div class="hero-greeting">${greeting()} 👋</div>
-        <div class="hero-title">${todayN >= settings.dailyGoal ? 'Цель дня выполнена!' : 'Продолжайте обучение'}</div>
-        <div class="hero-progress">
-          <div class="hero-progress-fill" style="width:${goalPct}%"></div>
-        </div>
-        <div class="hero-stats">
-          <span><b>${todayN}</b> / ${settings.dailyGoal} сегодня</span>
-          <span>${goalPct}%</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="mini-stats">
-      <div class="stat-pill streak">
-        <div class="stat-pill-value">${stats.streak}</div>
-        <div class="stat-pill-label">Стрик 🔥</div>
-      </div>
-      <div class="stat-pill due">
-        <div class="stat-pill-value">${due}</div>
-        <div class="stat-pill-label">К повтору</div>
-      </div>
-      <div class="stat-pill difficult">
-        <div class="stat-pill-value">${difficult}</div>
-        <div class="stat-pill-label">Сложных</div>
-      </div>
-    </div>
-
-    <div class="action-grid">
-      <button class="action-tile" id="btnQuiz" ${words.length === 0 ? 'disabled' : ''}>
-        <div class="tile-icon accent">${ICONS.target}</div>
-        <div class="tile-content">
-          <div class="tile-title">Викторина</div>
-          <div class="tile-sub">${words.length > 0 ? '4 варианта · ввод' : 'нет слов'}</div>
-        </div>
+    <div class="big-actions">
+      <button class="primary" id="btnQuiz" ${words.length === 0 ? 'disabled' : ''}>
+        <span>🎯 Викторина</span>
+        <span class="btn-count">${words.length > 0 ? 'начать' : 'нет слов'}</span>
       </button>
-      <button class="action-tile" id="btnCards" ${due === 0 ? 'disabled' : ''}>
-        <div class="tile-icon success">${ICONS.cards}</div>
-        <div class="tile-content">
-          <div class="tile-title">Карточки</div>
-          <div class="tile-sub">${due > 0 ? due + ' к повтору' : 'всё повторено'}</div>
-        </div>
+      <button id="btnCards" ${due === 0 ? 'disabled' : ''}>
+        <span>🃏 Карточки (SRS)</span>
+        <span class="btn-count">${due > 0 ? due + ' к повторению' : 'всё повторено'}</span>
       </button>
-      <button class="action-tile wide" id="btnDifficult" ${difficult === 0 ? 'disabled' : ''}>
-        <div class="tile-icon danger">${ICONS.repeat}</div>
-        <div class="tile-content">
-          <div class="tile-title">Сложные слова</div>
-          <div class="tile-sub">${difficult > 0 ? difficult + ' слов в работе' : 'пока пусто'}</div>
-        </div>
+      <button class="difficult" id="btnDifficult" ${difficult === 0 ? 'disabled' : ''}>
+        <span>🔁 Сложные слова</span>
+        <span class="btn-count">${difficult > 0 ? difficult + ' слов' : 'пусто'}</span>
       </button>
     </div>
 
-    ${bottomNav('home')}
+    <div class="daily-goal">
+      Сегодня: <b>${todayN}</b> / ${settings.dailyGoal} слов
+      <div class="bar"><div class="bar-fill" style="width:${goalPct}%"></div></div>
+    </div>
   `;
-  bindTopBar({ onMore: renderMore });
-  bindBottomNav();
-  document.getElementById('deckSelector').addEventListener('click', renderDeckPicker);
+  document.getElementById('deckSwitcher').addEventListener('click', renderDeckPicker);
+  document.getElementById('btnMore').addEventListener('click', renderMore);
   document.getElementById('btnQuiz').addEventListener('click', () => startQuizSetup('all'));
   document.getElementById('btnCards').addEventListener('click', () => startCards('due'));
   document.getElementById('btnDifficult').addEventListener('click', () => startQuizSetup('difficult'));
-
-  if (showInstall) {
-    document.getElementById('btnInstall').addEventListener('click', promptInstall);
-    document.getElementById('btnInstallClose').addEventListener('click', () => {
-      reminder.installBannerClosed = true; saveReminder();
-      document.getElementById('installBanner').remove();
-    });
-  }
 }
 
 /* =========================================================================
-   ВЫБОР КОЛОДЫ
+   МОДУЛЬ 10. ВЫБОР КОЛОДЫ
    ========================================================================= */
 function renderDeckPicker() {
-  lastRender = renderDeckPicker;
   app.innerHTML = `
-    ${topBar({ back: true, title: 'Колоды', onBack: renderHome })}
-    <h2 class="section-title">Мои колоды</h2>
+    <div class="topbar">
+      <button id="backHome">← Назад</button>
+      <span>Колоды</span>
+    </div>
+    <h2>Ваши колоды</h2>
     <div class="deck-list" id="deckList"></div>
-    <button class="btn full mt-16" id="createDeck">${ICONS.plus} Новая колода</button>
-    ${bottomNav('decks')}
+    <div style="margin-top:16px;text-align:center;">
+      <button class="btn" id="createDeck">➕ Новая колода</button>
+    </div>
   `;
-  bindTopBar({ onBack: renderHome });
-  bindBottomNav();
+  document.getElementById('backHome').addEventListener('click', renderHome);
   document.getElementById('createDeck').addEventListener('click', () => {
     const name = prompt('Название колоды:', 'Новая колода');
     if (!name) return;
@@ -2150,36 +792,34 @@ function renderDeckPicker() {
     renderDeckPicker();
   });
   const list = document.getElementById('deckList');
-  if (decks.length === 0) {
-    list.innerHTML = `<div class="empty">Колод пока нет</div>`;
-  }
   decks.forEach(d => {
     const w = wordsByDeck[d.id] || [];
     const due = dueWords(d.id).length;
     const diff = difficultWords(d.id).length;
-    const el = document.createElement('div');
-    el.className = 'deck-card' + (d.id === activeDeckId ? ' active' : '');
-    el.innerHTML = `
-      <div class="deck-card-icon">${ICONS.decks}</div>
-      <div class="deck-card-info">
-        <div class="deck-card-name">${escapeHtml(d.name)}</div>
-        <div class="deck-card-meta">${w.length} слов · ${due} к повтору${diff > 0 ? ' · ' + diff + ' сложных' : ''}</div>
+    const item = document.createElement('div');
+    item.className = 'deck-item' + (d.id === activeDeckId ? ' active' : '') + (d.system ? ' system' : '');
+    item.innerHTML = `
+      <div class="info">
+        <div class="name">${escapeHtml(d.name)}${d.system ? '<span class="badge-system">системная</span>' : ''}</div>
+        <div class="meta">${w.length} слов · ${due} к повторению${diff > 0 ? ' · ' + diff + ' сложных' : ''}</div>
       </div>
-      <div class="deck-card-actions">
-        <button class="icon-btn" data-act="rename" title="Переименовать">${ICONS.edit}</button>
-        <button class="icon-btn" data-act="delete" title="Удалить">${ICONS.trash}</button>
+      <div class="actions">
+        ${d.system ? '' : `
+          <button class="icon-btn" data-action="rename" title="Переименовать">✏️</button>
+          <button class="icon-btn danger" data-action="delete" title="Удалить">🗑</button>
+        `}
       </div>
     `;
-    el.addEventListener('click', e => {
-      const a = e.target.closest('[data-act]');
-      if (a) {
+    item.addEventListener('click', e => {
+      const action = e.target.closest('[data-action]');
+      if (action) {
         e.stopPropagation();
-        if (a.dataset.act === 'rename') {
-          const n = prompt('Новое название:', d.name);
-          if (n) { d.name = n; saveDecks(); renderDeckPicker(); }
-        } else {
+        if (action.dataset.action === 'rename') {
+          const newName = prompt('Новое название:', d.name);
+          if (newName) { d.name = newName; saveDecks(); renderDeckPicker(); }
+        } else if (action.dataset.action === 'delete') {
           if (decks.length === 1) { alert('Нельзя удалить единственную колоду.'); return; }
-          if (!confirm(`Удалить «${d.name}»? Прогресс будет потерян.`)) return;
+          if (!confirm(`Удалить колоду «${d.name}»? Весь прогресс будет потерян.`)) return;
           decks = decks.filter(x => x.id !== d.id);
           delete wordsByDeck[d.id]; delete progressByDeck[d.id]; delete difficultByDeck[d.id];
           if (activeDeckId === d.id) activeDeckId = decks[0].id;
@@ -2187,94 +827,41 @@ function renderDeckPicker() {
         }
         return;
       }
-      activeDeckId = d.id; saveDecks(); renderHome();
+      activeDeckId = d.id;
+      saveDecks();
+      renderHome();
     });
-    list.appendChild(el);
+    list.appendChild(item);
   });
 }
 
 /* =========================================================================
-   МЕНЮ "ЕЩЁ"
+   МОДУЛЬ 11. МЕНЮ "ЕЩЁ"
    ========================================================================= */
 function renderMore() {
-  lastRender = renderMore;
   app.innerHTML = `
-    ${topBar({ back: true, title: 'Ещё', onBack: renderHome })}
-    <div class="list-section">
-      <button class="list-item" id="mDecks">
-        <div class="list-item-icon">${ICONS.decks}</div>
-        <div class="list-item-text">Управление колодами</div>
-        <div class="list-item-arrow">›</div>
-      </button>
-      <button class="list-item" id="mEditor">
-        <div class="list-item-icon">${ICONS.edit}</div>
-        <div class="list-item-text">Редактор базы слов</div>
-        <div class="list-item-arrow">›</div>
-      </button>
-      <button class="list-item" id="mStats">
-        <div class="list-item-icon">${ICONS.stats}</div>
-        <div class="list-item-text">Статистика</div>
-        <div class="list-item-arrow">›</div>
-      </button>
-      <button class="list-item" id="mData">
-        <div class="list-item-icon">${ICONS.download}</div>
-        <div class="list-item-text">Импорт / экспорт</div>
-        <div class="list-item-arrow">›</div>
-      </button>
+    <div class="topbar">
+      <button id="backHome">← Назад</button>
+      <span>Ещё</span>
     </div>
-
-    <h2 class="section-title">Настройки</h2>
-    <div class="list-section">
-      <button class="list-item" id="mSettings">
-        <div class="list-item-icon">${ICONS.settings}</div>
-        <div class="list-item-text">Параметры обучения</div>
-        <div class="list-item-arrow">›</div>
-      </button>
-      <button class="list-item" id="mLogo">
-        <div class="list-item-icon">${ICONS.image}</div>
-        <div class="list-item-text">Логотип приложения</div>
-        <div class="list-item-arrow">›</div>
-      </button>
-      <button class="list-item" id="mReminders">
-        <div class="list-item-icon">${ICONS.bell}</div>
-        <div class="list-item-text">Напоминания</div>
-        <div class="list-item-arrow">›</div>
-      </button>
-      <button class="list-item" id="mInstall">
-        <div class="list-item-icon">${ICONS.downloadApp}</div>
-        <div class="list-item-text">Установить приложение</div>
-        <div class="list-item-arrow">›</div>
-      </button>
+    <div class="more-menu">
+      <button id="mDecks">📚 Управление колодами <span>›</span></button>
+      <button id="mEditor">📝 Редактор базы слов <span>›</span></button>
+      <button id="mStats">📊 Статистика <span>›</span></button>
+      <button id="mSettings">⚙️ Настройки <span>›</span></button>
+      <button id="mReminders">🔔 Напоминания <span>›</span></button>
+      <button id="mData">💾 Импорт / экспорт <span>›</span></button>
+      <button id="mReset" class="danger">🗑 Сбросить прогресс колоды <span>›</span></button>
+      <button id="mResetAll" class="danger">💣 Сбросить ВСЁ (все колоды) <span>›</span></button>
     </div>
-
-    <h2 class="section-title">Опасная зона</h2>
-    <div class="list-section">
-      <button class="list-item" id="mReset">
-        <div class="list-item-icon warning">${ICONS.refresh}</div>
-        <div class="list-item-text">Сбросить прогресс колоды</div>
-        <div class="list-item-arrow">›</div>
-      </button>
-      <button class="list-item" id="mResetAll">
-        <div class="list-item-icon danger">${ICONS.trash}</div>
-        <div class="list-item-text" style="color:var(--danger);">Сбросить ВСЁ</div>
-        <div class="list-item-arrow">›</div>
-      </button>
-    </div>
-    ${bottomNav('more')}
   `;
-  bindTopBar({ onBack: renderHome });
-  bindBottomNav();
+  document.getElementById('backHome').addEventListener('click', renderHome);
   document.getElementById('mDecks').addEventListener('click', renderDeckPicker);
   document.getElementById('mEditor').addEventListener('click', renderEditor);
   document.getElementById('mStats').addEventListener('click', renderStats);
-  document.getElementById('mData').addEventListener('click', renderData);
   document.getElementById('mSettings').addEventListener('click', renderSettings);
-  document.getElementById('mLogo').addEventListener('click', renderLogo);
   document.getElementById('mReminders').addEventListener('click', renderReminders);
-  document.getElementById('mInstall').addEventListener('click', () => {
-    if (isStandalone()) { alert('Приложение уже установлено.'); return; }
-    promptInstall();
-  });
+  document.getElementById('mData').addEventListener('click', renderData);
   document.getElementById('mReset').addEventListener('click', () => {
     if (!confirm(`Сбросить прогресс колоды «${deckName(activeDeckId)}»? Слова останутся.`)) return;
     progressByDeck[activeDeckId] = {};
@@ -2282,90 +869,53 @@ function renderMore() {
     saveAll(); renderHome();
   });
   document.getElementById('mResetAll').addEventListener('click', () => {
-    if (!confirm('Удалить ВСЕ колоды, слова и прогресс?')) return;
-    if (!confirm('Точно? Это необратимо.')) return;
+    if (!confirm('Удалить ВСЕ колоды, слова и прогресс? Необратимо.')) return;
+    if (!confirm('Точно уверены? Последнее предупреждение.')) return;
     decks = []; activeDeckId = null;
     wordsByDeck = {}; progressByDeck = {}; difficultByDeck = {};
-    stats = { streak: 0, lastStudyDate: null, dailyCounts: {} };
+    stats = { series: 0, lastStudyDate: null, dailyCounts: {} };
     saveAll(); renderWelcome();
   });
 }
 
 /* =========================================================================
-   ЛОГОТИП (экран загрузки)
-   ========================================================================= */
-function renderLogo() {
-  lastRender = renderLogo;
-  app.innerHTML = `
-    ${topBar({ back: true, title: 'Логотип', onBack: renderMore })}
-    <div class="card text-center">
-      <div class="logo-preview" id="logoPreview">
-        ${customLogo ? `<img src="${customLogo}" alt="logo">` : 'A'}
-      </div>
-      <p class="text-dim mb-16" style="font-size:13px;line-height:1.6;">
-        Загрузите свой логотип — он появится в шапке, на экране приветствия и в иконке приложения.<br>
-        PNG, JPG или SVG. Максимум 500 КБ.
-      </p>
-      <button class="btn full mb-8" id="btnUpload">${ICONS.upload} Загрузить логотип</button>
-      ${customLogo ? `<button class="btn secondary full danger" id="btnRemove">${ICONS.trash} Удалить</button>` : ''}
-      <input type="file" id="fileLogo" accept="image/*" style="display:none;">
-    </div>
-    <p class="text-muted text-center mt-16" style="font-size:12px;">
-      Рекомендуется квадратное изображение, минимум 192×192 пикселя.
-    </p>
-  `;
-  bindTopBar({ onBack: renderMore });
-  document.getElementById('btnUpload').addEventListener('click', () => {
-    document.getElementById('fileLogo').click();
-  });
-  document.getElementById('fileLogo').addEventListener('change', e => {
-    handleLogoUpload(e.target.files[0]);
-  });
-  const rm = document.getElementById('btnRemove');
-  if (rm) rm.addEventListener('click', () => {
-    if (confirm('Удалить логотип?')) removeLogo();
-  });
-}
-
-/* =========================================================================
-   РЕДАКТОР БАЗЫ
+   МОДУЛЬ 12. РЕДАКТОР БАЗЫ
    ========================================================================= */
 let editorState = { search: '', sortBy: 'added', sortDir: 'asc', selected: new Set(), editingKey: null };
 function wordKey(w) { return w.en + '|' + w.ru; }
 
 function renderEditor() {
-  lastRender = renderEditor;
+  const sys = isSystemDeck(activeDeckId);
   app.innerHTML = `
-    ${topBar({ back: true, title: 'Редактор', onBack: renderMore })}
-    <div class="card mb-16" style="padding:12px;">
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <input class="input" id="edSearch" placeholder="Поиск..." value="${escapeHtml(editorState.search)}" style="flex:1;min-width:120px;">
-        <select class="select" id="edSort" style="width:auto;">
-          <option value="added" ${editorState.sortBy==='added'?'selected':''}>По добавлению</option>
-          <option value="en" ${editorState.sortBy==='en'?'selected':''}>A–Z English</option>
-          <option value="ru" ${editorState.sortBy==='ru'?'selected':''}>A–Z Русский</option>
-          <option value="status" ${editorState.sortBy==='status'?'selected':''}>По статусу</option>
-        </select>
-      </div>
-      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
-        <button class="btn secondary" id="edSortDir" style="flex:1;">${editorState.sortDir === 'asc' ? '↑ A→Z' : '↓ Z→A'}</button>
-        <button class="btn" id="edAdd" style="flex:1;">${ICONS.plus} Добавить</button>
-      </div>
+    <div class="topbar">
+      <button id="backHome">← Назад</button>
+      <span>Редактор · ${deckName(activeDeckId)} · ${getWords().length} слов</span>
     </div>
-
-    <div class="card mb-16" style="padding:10px 12px;">
-      <div style="display:flex;gap:6px;flex-wrap:wrap;">
-        <button class="btn ghost" id="edSelAll" style="font-size:12px;padding:8px 12px;">Выбрать все</button>
-        <button class="btn ghost" id="edSelNone" style="font-size:12px;padding:8px 12px;" ${editorState.selected.size === 0 ? 'disabled' : ''}>Снять</button>
-        <button class="btn ghost" id="edDifficultSel" style="font-size:12px;padding:8px 12px;" ${editorState.selected.size === 0 ? 'disabled' : ''}>🔁 В сложные</button>
-        <button class="btn ghost" id="edDeleteSel" style="font-size:12px;padding:8px 12px;color:var(--danger);" ${editorState.selected.size === 0 ? 'disabled' : ''}>Удалить</button>
-      </div>
-      <div class="text-muted" style="font-size:11px;margin-top:8px;">${getFilteredWords().length} показано · ${editorState.selected.size} выбрано</div>
+    ${sys ? `<div class="system-notice"><span class="icon">🔒</span>Это системная колода — слова нельзя менять, но можно учить.</div>` : ''}
+    <div class="editor-toolbar">
+      <input type="text" id="edSearch" placeholder="Поиск..." value="${escapeHtml(editorState.search)}">
+      <select id="edSort">
+        <option value="added" ${editorState.sortBy==='added'?'selected':''}>По добавлению</option>
+        <option value="en"    ${editorState.sortBy==='en'?'selected':''}>По english</option>
+        <option value="ru"    ${editorState.sortBy==='ru'?'selected':''}>По русский</option>
+        <option value="status"${editorState.sortBy==='status'?'selected':''}>По статусу</option>
+      </select>
+      <button class="neutral" id="edSortDir">${editorState.sortDir === 'asc' ? '↑ A→Z' : '↓ Z→A'}</button>
+      ${sys ? '' : `<button class="primary" id="edAdd" style="padding:4px 8px;font-size:11px;">➕</button>`}
     </div>
-
+    ${sys ? '' : `
+    <div class="editor-toolbar">
+      <button class="neutral" id="edSelAll">Выбрать все</button>
+      <button class="neutral" id="edSelNone" ${editorState.selected.size === 0 ? 'disabled' : ''}>Снять выбор</button>
+      <button class="neutral" id="edResetSel" ${editorState.selected.size === 0 ? 'disabled' : ''}>Сбросить прогресс</button>
+      <button class="neutral" id="edDifficultSel" ${editorState.selected.size === 0 ? 'disabled' : ''}>🔁 В сложные</button>
+      <button class="danger" id="edDeleteSel" ${editorState.selected.size === 0 ? 'disabled' : ''}>🗑 Удалить</button>
+      <span class="counter">${getFilteredWords().length} показано · ${editorState.selected.size} выбрано</span>
+    </div>
+    `}
     <div class="table-wrap" id="edTableWrap"></div>
   `;
-  bindTopBar({ onBack: renderMore });
+  document.getElementById('backHome').addEventListener('click', renderMore);
   document.getElementById('edSearch').addEventListener('input', e => { editorState.search = e.target.value; renderEditorTable(); });
   document.getElementById('edSort').addEventListener('change', e => { editorState.sortBy = e.target.value; renderEditorTable(); });
   document.getElementById('edSortDir').addEventListener('click', () => {
@@ -2373,28 +923,37 @@ function renderEditor() {
     document.getElementById('edSortDir').textContent = editorState.sortDir === 'asc' ? '↑ A→Z' : '↓ Z→A';
     renderEditorTable();
   });
-  document.getElementById('edAdd').addEventListener('click', addWordInline);
-  document.getElementById('edSelAll').addEventListener('click', () => {
-    getFilteredWords().forEach(w => editorState.selected.add(wordKey(w))); renderEditor();
-  });
-  document.getElementById('edSelNone').addEventListener('click', () => { editorState.selected.clear(); renderEditor(); });
-  document.getElementById('edDifficultSel').addEventListener('click', () => {
-    const diff = getDifficult();
-    for (const key of editorState.selected) {
-      const [en] = key.split('|');
-      diff[en] = { streak: 0, wrongs: 1, lastAdded: todayStr() };
-    }
-    saveDifficultMap(); alert('Добавлено в сложные.');
-  });
-  document.getElementById('edDeleteSel').addEventListener('click', () => {
-    if (!confirm(`Удалить ${editorState.selected.size} слов?`)) return;
-    const keys = new Set(editorState.selected);
-    setWords(getWords().filter(w => !keys.has(wordKey(w))));
-    const prog = getProgress();
-    for (const key of keys) { const [en] = key.split('|'); delete prog[en]; }
-    editorState.selected.clear();
-    saveProgressMap(); renderEditor();
-  });
+  if (!sys) {
+    document.getElementById('edAdd').addEventListener('click', addWordInline);
+    document.getElementById('edSelAll').addEventListener('click', () => {
+      getFilteredWords().forEach(w => editorState.selected.add(wordKey(w))); renderEditor();
+    });
+    document.getElementById('edSelNone').addEventListener('click', () => { editorState.selected.clear(); renderEditor(); });
+    document.getElementById('edResetSel').addEventListener('click', () => {
+      if (!confirm(`Сбросить прогресс для ${editorState.selected.size} слов?`)) return;
+      const prog = getProgress();
+      for (const key of editorState.selected) { const [en] = key.split('|'); delete prog[en]; }
+      saveProgressMap(); renderEditor();
+    });
+    document.getElementById('edDifficultSel').addEventListener('click', () => {
+      const diff = getDifficult();
+      for (const key of editorState.selected) {
+        const [en] = key.split('|');
+        diff[en] = { streak: 0, wrongs: 1, lastAdded: todayStr() };
+      }
+      saveDifficultMap();
+      alert('Добавлено в сложные.');
+    });
+    document.getElementById('edDeleteSel').addEventListener('click', () => {
+      if (!confirm(`Удалить ${editorState.selected.size} слов?`)) return;
+      const keys = new Set(editorState.selected);
+      setWords(getWords().filter(w => !keys.has(wordKey(w))));
+      const prog = getProgress();
+      for (const key of keys) { const [en] = key.split('|'); delete prog[en]; }
+      editorState.selected.clear();
+      saveProgressMap(); renderEditor();
+    });
+  }
   renderEditorTable();
 }
 
@@ -2419,16 +978,14 @@ function renderEditorTable() {
   const wrap = document.getElementById('edTableWrap');
   if (!wrap) return;
   const filtered = getFilteredWords();
-  if (getWords().length === 0) {
-    wrap.innerHTML = `<div class="empty">${ICONS.cards}<br>Слов пока нет</div>`; return;
-  }
-  if (filtered.length === 0) {
-    wrap.innerHTML = `<div class="empty">Ничего не найдено</div>`; return;
-  }
+  const sys = isSystemDeck(activeDeckId);
+  if (getWords().length === 0) { wrap.innerHTML = `<div class="empty-state">Слов пока нет.</div>`; return; }
+  if (filtered.length === 0) { wrap.innerHTML = `<div class="empty-state">Ничего не найдено.</div>`; return; }
+
   wrap.innerHTML = `
     <table>
       <thead>
-        <tr><th style="width:30px;"></th><th>EN</th><th>RU</th><th>Статус</th><th></th></tr>
+        <tr>${sys ? '' : '<th class="checkbox-col"></th>'}<th>English</th><th>Русский</th><th>Статус</th><th>Интервал</th><th>След.</th>${sys ? '' : '<th></th>'}</tr>
       </thead>
       <tbody id="edTbody"></tbody>
     </table>
@@ -2439,72 +996,83 @@ function renderEditorTable() {
     const isSelected = editorState.selected.has(key);
     const isEditing = editorState.editingKey === key;
     const st = wordStatus(w.en);
+    const card = getProgress()[w.en];
     const diff = isDifficult(w.en);
     const tr = document.createElement('tr');
+    tr.className = 'word-row' + (isEditing ? ' editing' : '');
     tr.dataset.key = key;
-    if (isEditing) {
+    if (isEditing && !sys) {
       tr.innerHTML = `
-        <td></td>
-        <td><input class="input" data-field="en" value="${escapeHtml(w.en)}" style="padding:6px 8px;font-size:12px;"></td>
-        <td><input class="input" data-field="ru" value="${escapeHtml(w.ru)}" style="padding:6px 8px;font-size:12px;"></td>
-        <td colspan="1" class="text-muted" style="font-size:11px;">Ред.</td>
+        <td class="checkbox-col"></td>
+        <td><input class="edit-input" data-field="en" value="${escapeHtml(w.en)}"></td>
+        <td><input class="edit-input" data-field="ru" value="${escapeHtml(w.ru)}"></td>
+        <td colspan="3" style="color:#888;font-size:12px;">Редактирование</td>
         <td style="white-space:nowrap;">
-          <button class="icon-btn" data-act="save" style="width:28px;height:28px;">${ICONS.check}</button>
-          <button class="icon-btn" data-act="cancel" style="width:28px;height:28px;">${ICONS.x}</button>
+          <button class="icon-btn" data-action="save">💾</button>
+          <button class="icon-btn" data-action="cancel">✖</button>
         </td>
       `;
     } else {
       tr.innerHTML = `
-        <td><input type="checkbox" data-act="select" ${isSelected ? 'checked' : ''} style="accent-color:var(--accent);"></td>
+        ${sys ? '' : `<td class="checkbox-col"><input type="checkbox" data-action="select" ${isSelected ? 'checked' : ''}></td>`}
         <td><b>${escapeHtml(w.en)}</b></td>
         <td>${escapeHtml(w.ru)}</td>
         <td>${diff ? '<span class="tag difficult">Сложное</span> ' : ''}<span class="tag ${st}">${statusName(st)}</span></td>
-        <td style="white-space:nowrap;">
-          <button class="icon-btn" data-act="edit" style="width:28px;height:28px;">${ICONS.edit}</button>
-          <button class="icon-btn" data-act="delete" style="width:28px;height:28px;color:var(--danger);">${ICONS.trash}</button>
-        </td>
+        <td>${card ? intervalLabel(card.interval) : '—'}</td>
+        <td>${card ? card.due : '—'}</td>
+        ${sys ? '' : `<td style="white-space:nowrap;">
+          <button class="icon-btn" data-action="edit">✏️</button>
+          <button class="icon-btn danger" data-action="delete">🗑</button>
+        </td>`}
       `;
     }
     tbody.appendChild(tr);
   });
-  tbody.addEventListener('click', e => {
-    const btn = e.target.closest('button[data-act]');
-    const tr = e.target.closest('tr');
-    if (!tr) return;
-    const key = tr.dataset.key;
-    const word = getWords().find(w => wordKey(w) === key);
-    if (!word) return;
-    if (btn) {
-      const a = btn.dataset.act;
-      if (a === 'edit') { editorState.editingKey = key; renderEditorTable(); }
-      else if (a === 'cancel') { editorState.editingKey = null; renderEditorTable(); }
-      else if (a === 'save') saveEditedWord(tr, word);
-      else if (a === 'delete') {
-        if (!confirm(`Удалить «${word.en}»?`)) return;
-        setWords(getWords().filter(w => wordKey(w) !== key));
-        delete getProgress()[word.en];
-        delete getDifficult()[word.en];
-        saveProgressMap(); saveDifficultMap(); editorState.selected.delete(key); renderEditor();
+  if (!sys) {
+    tbody.addEventListener('click', e => {
+      const btn = e.target.closest('button[data-action]');
+      const tr = e.target.closest('tr');
+      if (!tr) return;
+      const key = tr.dataset.key;
+      const word = getWords().find(w => wordKey(w) === key);
+      if (!word) return;
+      if (btn) {
+        const a = btn.dataset.action;
+        if (a === 'edit') { editorState.editingKey = key; renderEditorTable(); }
+        else if (a === 'cancel') { editorState.editingKey = null; renderEditorTable(); }
+        else if (a === 'save') saveEditedWord(tr, word);
+        else if (a === 'delete') {
+          if (!confirm(`Удалить «${word.en}»?`)) return;
+          setWords(getWords().filter(w => wordKey(w) !== key));
+          delete getProgress()[word.en];
+          delete getDifficult()[word.en];
+          saveProgressMap(); saveDifficultMap(); editorState.selected.delete(key); renderEditor();
+        }
       }
-    }
-  });
-  tbody.addEventListener('change', e => {
-    const cb = e.target.closest('input[data-act="select"]');
-    if (!cb) return;
-    const key = e.target.closest('tr').dataset.key;
-    if (cb.checked) editorState.selected.add(key); else editorState.selected.delete(key);
-  });
-  tbody.querySelectorAll('input[data-field]').forEach(inp => {
-    inp.addEventListener('keydown', e => {
-      if (e.key === 'Enter') {
-        const tr = e.target.closest('tr');
-        const word = getWords().find(w => wordKey(w) === tr.dataset.key);
-        if (word) saveEditedWord(tr, word);
-      } else if (e.key === 'Escape') { editorState.editingKey = null; renderEditorTable(); }
     });
-  });
-  const first = tbody.querySelector('input[data-field]');
-  if (first) first.focus();
+    tbody.addEventListener('change', e => {
+      const cb = e.target.closest('input[data-action="select"]');
+      if (!cb) return;
+      const key = e.target.closest('tr').dataset.key;
+      if (cb.checked) editorState.selected.add(key); else editorState.selected.delete(key);
+      const counter = document.querySelector('.counter');
+      if (counter) counter.textContent = `${getFilteredWords().length} показано · ${editorState.selected.size} выбрано`;
+      ['edSelNone','edDeleteSel','edResetSel','edDifficultSel'].forEach(id => {
+        const b = document.getElementById(id); if (b) b.disabled = editorState.selected.size === 0;
+      });
+    });
+    tbody.querySelectorAll('.edit-input').forEach(inp => {
+      inp.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+          const tr = e.target.closest('tr');
+          const word = getWords().find(w => wordKey(w) === tr.dataset.key);
+          if (word) saveEditedWord(tr, word);
+        } else if (e.key === 'Escape') { editorState.editingKey = null; renderEditorTable(); }
+      });
+    });
+    const first = tbody.querySelector('.edit-input');
+    if (first) first.focus();
+  }
 }
 
 function saveEditedWord(tr, oldWord) {
@@ -2532,16 +1100,13 @@ function addWordInline() {
   if (document.getElementById('addPanel')) { document.getElementById('addPanel').remove(); return; }
   const panel = document.createElement('div');
   panel.id = 'addPanel';
-  panel.className = 'card mb-16';
-  panel.style.padding = '12px';
+  panel.style.cssText = 'background:#f8f9fc;border-radius:10px;padding:12px;margin-bottom:12px;display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:center;';
   panel.innerHTML = `
-    <div style="display:grid;gap:8px;grid-template-columns:1fr 1fr;margin-bottom:8px;">
-      <input class="input" id="addEn" placeholder="English" style="font-size:13px;">
-      <input class="input" id="addRu" placeholder="Русский" style="font-size:13px;">
-    </div>
-    <div style="display:flex;gap:8px;">
-      <button class="btn full" id="addSave">Добавить</button>
-      <button class="btn secondary" id="addCancel">Отмена</button>
+    <input id="addEn" placeholder="English" style="padding:8px 10px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;">
+    <input id="addRu" placeholder="Русский" style="padding:8px 10px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;">
+    <div>
+      <button class="btn small" id="addSave" style="background:#2a5298;color:#fff;">Добавить</button>
+      <button class="btn small secondary" id="addCancel">✖</button>
     </div>
   `;
   wrap.parentElement.insertBefore(panel, wrap);
@@ -2563,121 +1128,111 @@ function addWordInline() {
   });
 }
 function statusName(st) {
-  return { new: 'Новое', learning: 'Учится', young: 'Молодое', mature: 'Зрелое' }[st] || st;
+  return { new: 'Новое', learning: 'Изучается', young: 'Молодое', mature: 'Зрелое' }[st] || st;
 }
 
 /* =========================================================================
-   НАСТРОЙКА ВИКТОРИНЫ
+   МОДУЛЬ 13. НАСТРОЙКА ВИКТОРИНЫ
    ========================================================================= */
 function startQuizSetup(source) {
-  lastRender = () => startQuizSetup(source);
-  const sourceLabel = source === 'difficult' ? 'Сложные слова' : 'Викторина';
+  const sourceLabel = source === 'difficult' ? 'Тренировка сложных слов' : 'Викторина';
   app.innerHTML = `
-    ${topBar({ back: true, title: sourceLabel, onBack: renderHome })}
-    <h2 class="section-title">Настройки сессии</h2>
-
-    <div class="card mb-16">
-      <div class="form-row">
-        <label>Направление</label>
-        <div class="radio-group" data-group="direction">
-          ${['en-ru','ru-en','mix'].map(v => `
-            <label class="radio-chip ${settings.direction === v ? 'active' : ''}" data-v="${v}">
-              <input type="radio" name="dir" value="${v}" ${settings.direction === v ? 'checked' : ''}>
-              ${v === 'en-ru' ? 'EN → RU' : v === 'ru-en' ? 'RU → EN' : '🔀 Микс'}
-            </label>
-          `).join('')}
-        </div>
-      </div>
-
-      <div class="form-row">
-        <label>Режим ответа</label>
-        <div class="radio-group" data-group="quizMode">
-          ${['mc','typing','mixed'].map(v => `
-            <label class="radio-chip ${settings.quizMode === v ? 'active' : ''}" data-v="${v}">
-              <input type="radio" name="mode" value="${v}" ${settings.quizMode === v ? 'checked' : ''}>
-              ${v === 'mc' ? 'Варианты' : v === 'typing' ? 'Ввод' : '🔀 Микс'}
-            </label>
-          `).join('')}
-        </div>
-      </div>
-
-      <div class="form-row">
-        <label>Сколько слов</label>
-        <div class="radio-group" data-group="quizSize">
-          ${[10,20,50,0].map(n => `
-            <label class="radio-chip ${settings.quizSize === n ? 'active' : ''}" data-v="${n}">
-              <input type="radio" name="size" value="${n}" ${settings.quizSize === n ? 'checked' : ''}>
-              ${n === 0 ? 'Все' : n}
-            </label>
-          `).join('')}
-        </div>
-      </div>
-
-      <div class="form-row">
-        <label>Активное припоминание</label>
-        <div class="radio-group" data-group="recallFirst">
-          <label class="radio-chip ${settings.recallFirst ? 'active' : ''}" data-v="on">
-            <input type="radio" name="recall" value="on" ${settings.recallFirst ? 'checked' : ''}>Вкл</label>
-          <label class="radio-chip ${!settings.recallFirst ? 'active' : ''}" data-v="off">
-            <input type="radio" name="recall" value="off" ${!settings.recallFirst ? 'checked' : ''}>Выкл</label>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <label>Повторять ошибки в конце</label>
-        <div class="radio-group" data-group="retryMistakes">
-          <label class="radio-chip ${settings.retryMistakes ? 'active' : ''}" data-v="on">
-            <input type="radio" name="retry" value="on" ${settings.retryMistakes ? 'checked' : ''}>Да</label>
-          <label class="radio-chip ${!settings.retryMistakes ? 'active' : ''}" data-v="off">
-            <input type="radio" name="retry" value="off" ${!settings.retryMistakes ? 'checked' : ''}>Нет</label>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <label>Приоритет сложных слов</label>
-        <div class="radio-group" data-group="prioritizeHard">
-          <label class="radio-chip ${settings.prioritizeHard ? 'active' : ''}" data-v="on">
-            <input type="radio" name="prio" value="on" ${settings.prioritizeHard ? 'checked' : ''}>Да</label>
-          <label class="radio-chip ${!settings.prioritizeHard ? 'active' : ''}" data-v="off">
-            <input type="radio" name="prio" value="off" ${!settings.prioritizeHard ? 'checked' : ''}>Нет</label>
-        </div>
+    <div class="topbar">
+      <button id="backHome">← Назад</button>
+      <span>${sourceLabel}</span>
+    </div>
+    <h2>${sourceLabel}</h2>
+    <div class="form-row">
+      <label>Направление</label>
+      <div class="radio-group" id="dirGroup">
+        ${['en-ru','ru-en','mix'].map(v => `
+          <label data-v="${v}" class="${settings.direction === v ? 'active' : ''}">
+            <input type="radio" name="dir" value="${v}" ${settings.direction === v ? 'checked' : ''}>
+            ${v === 'en-ru' ? 'EN → RU' : v === 'ru-en' ? 'RU → EN' : '🔀 Смешанное'}
+          </label>
+        `).join('')}
       </div>
     </div>
-
-    <button class="btn full" id="startQuiz">🚀 Начать</button>
-    ${bottomNav('home')}
+    <div class="form-row">
+      <label>Режим ответа</label>
+      <div class="radio-group" id="modeGroup">
+        ${['mc','typing','mixed'].map(v => `
+          <label data-v="${v}" class="${settings.quizMode === v ? 'active' : ''}">
+            <input type="radio" name="mode" value="${v}" ${settings.quizMode === v ? 'checked' : ''}>
+            ${v === 'mc' ? 'Варианты' : v === 'typing' ? 'Ввод' : '🔀 Смешанное'}
+          </label>
+        `).join('')}
+      </div>
+    </div>
+    <div class="form-row">
+      <label>Сколько слов</label>
+      <div class="radio-group" id="sizeGroup">
+        ${[10,20,50,0].map(n => `
+          <label data-v="${n}" class="${settings.quizSize === n ? 'active' : ''}">
+            <input type="radio" name="size" value="${n}" ${settings.quizSize === n ? 'checked' : ''}>
+            ${n === 0 ? 'Все' : n}
+          </label>
+        `).join('')}
+      </div>
+    </div>
+    <div class="form-row">
+      <label>Активное припоминание</label>
+      <div class="radio-group" id="recallGroup">
+        <label data-v="on" class="${settings.recallFirst ? 'active' : ''}">
+          <input type="radio" name="recall" value="on" ${settings.recallFirst ? 'checked' : ''}>Вкл</label>
+        <label data-v="off" class="${!settings.recallFirst ? 'active' : ''}">
+          <input type="radio" name="recall" value="off" ${!settings.recallFirst ? 'checked' : ''}>Выкл</label>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>Повторять ошибки в конце</label>
+      <div class="radio-group" id="retryGroup">
+        <label data-v="on" class="${settings.retryMistakes ? 'active' : ''}">
+          <input type="radio" name="retry" value="on" ${settings.retryMistakes ? 'checked' : ''}>Да</label>
+        <label data-v="off" class="${!settings.retryMistakes ? 'active' : ''}">
+          <input type="radio" name="retry" value="off" ${!settings.retryMistakes ? 'checked' : ''}>Нет</label>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>Приоритет сложных</label>
+      <div class="radio-group" id="prioGroup">
+        <label data-v="on" class="${settings.prioritizeHard ? 'active' : ''}">
+          <input type="radio" name="prio" value="on" ${settings.prioritizeHard ? 'checked' : ''}>Да</label>
+        <label data-v="off" class="${!settings.prioritizeHard ? 'active' : ''}">
+          <input type="radio" name="prio" value="off" ${!settings.prioritizeHard ? 'checked' : ''}>Нет</label>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:20px;">
+      <button class="btn" id="startQuiz">🚀 Начать</button>
+      <button class="btn secondary" id="cancel">Отмена</button>
+    </div>
   `;
-  bindTopBar({ onBack: renderHome });
-  bindBottomNav();
-
-  const bind = (groupName, prop, transform = v => v) => {
-    const g = document.querySelector(`[data-group="${groupName}"]`);
-    if (!g) return;
+  const bind = (id, prop, transform = v => v) => {
+    const g = document.getElementById(id);
     g.addEventListener('change', e => {
       const v = e.target.value;
       settings[prop] = transform(v);
-      g.querySelectorAll('.radio-chip').forEach(l => l.classList.toggle('active', l.dataset.v === v));
+      g.querySelectorAll('label').forEach(l => l.classList.toggle('active', l.dataset.v === v));
       saveSettings();
     });
   };
-  bind('direction','direction');
-  bind('quizMode','quizMode');
-  bind('quizSize','quizSize', v => parseInt(v,10));
-  bind('recallFirst','recallFirst', v => v === 'on');
-  bind('retryMistakes','retryMistakes', v => v === 'on');
-  bind('prioritizeHard','prioritizeHard', v => v === 'on');
-
+  bind('dirGroup','direction'); bind('modeGroup','quizMode');
+  bind('sizeGroup','quizSize', v => parseInt(v,10));
+  bind('recallGroup','recallFirst', v => v === 'on');
+  bind('retryGroup','retryMistakes', v => v === 'on');
+  bind('prioGroup','prioritizeHard', v => v === 'on');
+  document.getElementById('backHome').addEventListener('click', renderHome);
+  document.getElementById('cancel').addEventListener('click', renderHome);
   document.getElementById('startQuiz').addEventListener('click', () => { saveSettings(); beginQuiz(source); });
 }
 
 /* =========================================================================
-   ВИКТОРИНА
+   МОДУЛЬ 14. ВИКТОРИНА
    ========================================================================= */
 let quiz = [], quizIndex = 0, quizScore = 0, quizAnswered = false, quizRevealed = false;
 let quizMistakes = [], quizDirections = [], quizSource = 'all', quizPool = [];
 
 function beginQuiz(source = 'all') {
-  lastRender = () => beginQuiz(source);
   quizSource = source;
   const base = source === 'difficult' ? difficultWords() : getWords();
   quizPool = getWords();
@@ -2705,9 +1260,7 @@ function currentMode() {
   if (settings.quizMode === 'typing') return 'typing';
   return Math.random() < 0.5 ? 'mc' : 'typing';
 }
-
 function renderQuizQuestion() {
-  lastRender = renderQuizQuestion;
   if (quizIndex >= quiz.length) return renderQuizResult();
   quizAnswered = false; quizRevealed = !settings.recallFirst;
   const word = quiz[quizIndex];
@@ -2717,77 +1270,44 @@ function renderQuizQuestion() {
   const total = quiz.length;
   const percent = (quizIndex / total) * 100;
   const title = quizSource === 'difficult' ? 'Сложные' : 'Викторина';
-
   app.innerHTML = `
-    ${topBar({ back: true, title, onBack: () => {
-      if (confirm('Выйти из викторины?')) renderHome();
-    }})}
-
-    <div class="quiz-header">
-      <div class="quiz-progress-track">
-        <div class="quiz-progress-fill" style="width:${percent}%"></div>
-      </div>
-      <div class="quiz-counter">${quizIndex + 1}/${total}</div>
+    <div class="topbar">
+      <button id="backHome">← Выйти</button>
+      <span>${title} · ${quizIndex + 1} / ${total}</span>
     </div>
-
-    <div class="quiz-meta">
-      <span class="badge">${dir === 'en-ru' ? 'EN → RU' : 'RU → EN'}</span>
-      <span class="badge">${mode === 'mc' ? 'Варианты' : 'Ввод'}</span>
-      <span class="badge" style="color:var(--success);">✓ ${quizScore}</span>
-      <span class="badge" style="color:var(--danger);">✗ ${quizMistakes.length}</span>
+    <div class="progress">
+      <span>Правильно: ${quizScore} · Ошибок: ${quizMistakes.length}</span>
+      <span>${mode === 'mc' ? 'Варианты' : 'Ввод'}</span>
     </div>
-
-    <div class="question-card">
-      <div class="question-dir">${dir === 'en-ru' ? 'Переведите на русский' : 'Translate to English'}</div>
-      <div class="question-text">${escapeHtml(qText)}</div>
+    <div class="progress-bar"><div class="progress-bar-fill" style="width:${percent}%"></div></div>
+    <div class="question">
+      <div class="dir-badge">${dir === 'en-ru' ? 'EN → RU' : 'RU → EN'}</div>
+      <div>${escapeHtml(qText)}</div>
     </div>
-
     <div id="stage"></div>
   `;
-  bindTopBar({ onBack: () => { if (confirm('Выйти?')) renderHome(); } });
-
+  document.getElementById('backHome').addEventListener('click', () => {
+    if (confirm('Выйти из викторины?')) renderHome();
+  });
   if (quizRevealed) showAnswerUI(word, dir, mode);
   else showRecallPrompt(word, dir, mode);
 }
-
 function showRecallPrompt(word, dir, mode) {
   const stage = document.getElementById('stage');
-  stage.innerHTML = `
-    <div class="recall-box">
-      <div class="recall-hint">💭 Вспомните ответ, затем проверьте себя</div>
-      <button class="btn full" id="showOpts">Показать ответ</button>
-    </div>
-  `;
-  document.getElementById('showOpts').addEventListener('click', () => {
-    quizRevealed = true; showAnswerUI(word, dir, mode);
-  });
+  stage.innerHTML = `<div class="recall-box"><div class="hint-text">Вспомните ответ, затем проверьте себя</div><button class="btn" id="showOpts">Показать</button></div>`;
+  document.getElementById('showOpts').addEventListener('click', () => { quizRevealed = true; showAnswerUI(word, dir, mode); });
 }
-
 function showAnswerUI(word, dir, mode) {
   const stage = document.getElementById('stage');
   if (mode === 'mc') {
     const options = makeOptions(word, dir, quizPool);
-    stage.innerHTML = `<div class="options-grid" id="options"></div>`;
+    stage.innerHTML = `<div class="options" id="options"></div>`;
     const el = document.getElementById('options');
-    const keys = ['A', 'B', 'C', 'D'];
-    options.forEach((opt, i) => {
+    options.forEach(opt => {
       const btn = document.createElement('button');
-      btn.className = 'option-btn';
+      btn.className = 'option'; btn.textContent = opt._a;
       btn.dataset.correct = (opt.en === word.en && opt.ru === word.ru) ? '1' : '0';
-      btn.innerHTML = `
-        <span class="option-key">${keys[i]}</span>
-        <span class="option-text">${escapeHtml(opt._a)}</span>
-      `;
-      btn.addEventListener('click', () => {
-        if (quizAnswered) return;
-        const isCorrect = btn.dataset.correct === '1';
-        document.querySelectorAll('.option-btn').forEach(b => {
-          b.disabled = true;
-          if (b.dataset.correct === '1') b.classList.add('correct');
-        });
-        if (!isCorrect) btn.classList.add('wrong');
-        handleAnswer(isCorrect, word, dir, mode);
-      });
+      btn.addEventListener('click', () => handleAnswer(btn.dataset.correct === '1', word, dir, mode));
       el.appendChild(btn);
     });
   } else {
@@ -2796,8 +1316,8 @@ function showAnswerUI(word, dir, mode) {
       <div class="typing-wrap">
         <input class="typing-input" id="typingInput" placeholder="Введите перевод..." autocomplete="off" autocapitalize="off" spellcheck="false">
         <div class="typing-feedback" id="feedback"></div>
-        <button class="btn full" id="submitTyping">Проверить</button>
-        <button class="btn ghost full" id="skipTyping">Не знаю</button>
+        <button class="btn" id="submitTyping">Проверить</button>
+        <button class="btn secondary" id="skipTyping">Не знаю</button>
       </div>
     `;
     const input = document.getElementById('typingInput');
@@ -2808,9 +1328,9 @@ function showAnswerUI(word, dir, mode) {
       const ok = answerMatches(val, correct);
       input.classList.add(ok ? 'correct' : 'wrong');
       const fb = document.getElementById('feedback');
-      fb.textContent = ok ? '✓ Верно!' : `Правильный ответ: ${correct}`;
+      fb.textContent = ok ? '✅ Верно!' : `❌ Правильный ответ: ${correct}`;
       fb.className = 'typing-feedback ' + (ok ? 'correct' : 'wrong');
-      handleAnswer(ok, word, dir, mode);
+      handleAnswer(ok, word, dir, mode, true);
     };
     document.getElementById('submitTyping').addEventListener('click', submit);
     input.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
@@ -2818,21 +1338,26 @@ function showAnswerUI(word, dir, mode) {
       if (quizAnswered) return;
       input.classList.add('wrong');
       const fb = document.getElementById('feedback');
-      fb.textContent = `Правильный ответ: ${correct}`;
+      fb.textContent = `❌ Правильный ответ: ${correct}`;
       fb.className = 'typing-feedback wrong';
-      handleAnswer(false, word, dir, mode);
+      handleAnswer(false, word, dir, mode, true);
     });
   }
 }
-
-function handleAnswer(isCorrect, word, dir, mode) {
+function handleAnswer(isCorrect, word, dir, mode, alreadyVisual = false) {
   if (quizAnswered) return;
   quizAnswered = true;
+  if (mode === 'mc' && !alreadyVisual) {
+    document.querySelectorAll('.option').forEach(b => {
+      b.disabled = true;
+      if (b.dataset.correct === '1') b.classList.add('correct');
+    });
+  }
   if (isCorrect) { quizScore++; markCorrectDifficult(word.en); }
   else { quizMistakes.push({ word, dir, mode }); markDifficult(word.en); }
   applyRating(word.en, isCorrect ? 2 : 0);
   incrementDailyCount(1);
-  updateStreak();
+  updateSeries();
   setTimeout(() => {
     quizIndex++;
     if (quizIndex >= quiz.length) {
@@ -2846,57 +1371,31 @@ function handleAnswer(isCorrect, word, dir, mode) {
     } else renderQuizQuestion();
   }, mode === 'typing' ? 1400 : 900);
 }
-
 function renderQuizResult() {
-  lastRender = renderQuizResult;
   const total = quizIndex;
   const percent = total > 0 ? Math.round((quizScore / total) * 100) : 0;
-  let emoji = '📚', title = 'Продолжайте тренироваться';
-  if (percent === 100) { emoji = '🏆'; title = 'Идеально!'; }
-  else if (percent >= 80) { emoji = '🎉'; title = 'Отличный результат!'; }
-  else if (percent >= 60) { emoji = '👍'; title = 'Хорошо!'; }
-  else if (percent >= 40) { emoji = '💪'; title = 'Есть куда расти'; }
-
+  let message = 'Попробуй ещё раз!';
+  if (percent === 100) message = 'Идеально! 🏆';
+  else if (percent >= 80) message = 'Отличный результат! 🎉';
+  else if (percent >= 60) message = 'Неплохо, но есть куда расти.';
+  else if (percent >= 40) message = 'Продолжай тренироваться!';
   app.innerHTML = `
-    ${topBar({ back: true, title: 'Результат', onBack: renderHome })}
-    <div class="card result-card">
-      <div class="result-emoji">${emoji}</div>
-      <div class="result-title">${title}</div>
-      <div class="result-sub">${quizSource === 'difficult' ? 'Верные слова покидают список сложных' : 'Прогресс сохранён'}</div>
-
-      <div class="result-stats">
-        <div>
-          <div class="result-stat-value good">${quizScore}</div>
-          <div class="result-stat-label">Верно</div>
-        </div>
-        <div>
-          <div class="result-stat-value bad">${total - quizScore}</div>
-          <div class="result-stat-label">Ошибок</div>
-        </div>
-        <div>
-          <div class="result-stat-value">${percent}%</div>
-          <div class="result-stat-label">Точность</div>
-        </div>
-      </div>
-
-      <div class="btn-row">
-        <button class="btn" id="again">${ICONS.refresh} Ещё раз</button>
-        <button class="btn secondary" id="backHome">В меню</button>
-      </div>
+    <div class="result">
+      <h2>${message}</h2>
+      <p>Правильных: <b>${quizScore}</b> из <b>${total}</b> (${percent}%)</p>
+      ${quizSource === 'difficult' ? '<p style="font-size:13px;color:#888;">Слова, отвеченные верно дважды, покинули список сложных.</p>' : ''}
+      <button class="btn" id="again">Заново</button>
+      <button class="btn secondary" id="backHome">В меню</button>
     </div>
-    ${bottomNav('home')}
   `;
-  bindTopBar({ onBack: renderHome });
-  bindBottomNav();
   document.getElementById('again').addEventListener('click', () => beginQuiz(quizSource));
   document.getElementById('backHome').addEventListener('click', renderHome);
 }
 
 /* =========================================================================
-   КАРТОЧКИ
+   МОДУЛЬ 15. КАРТОЧКИ (исправлен предпросмотр интервалов)
    ========================================================================= */
 let cardQueue = [], cardIndex = 0, cardFlipped = false, cardSessionDone = 0, cardSource = 'due';
-
 function startCards(source = 'due') {
   cardSource = source;
   cardQueue = shuffle(dueWords());
@@ -2904,9 +1403,7 @@ function startCards(source = 'due') {
   cardIndex = 0; cardSessionDone = 0;
   renderCard();
 }
-
 function renderCard() {
-  lastRender = renderCard;
   if (cardIndex >= cardQueue.length) return renderCardsResult();
   cardFlipped = false;
   const word = cardQueue[cardIndex];
@@ -2917,107 +1414,75 @@ function renderCard() {
     ? (Math.random() < 0.5 ? 'en-ru' : 'ru-en') : settings.direction;
   const front = dir === 'en-ru' ? word.en : word.ru;
   const back  = dir === 'en-ru' ? word.ru : word.en;
-
   app.innerHTML = `
-    ${topBar({ back: true, title: `Карточки · ${cardIndex + 1}/${total}`, onBack: () => {
-      if (confirm('Выйти из карточек?')) renderHome();
-    }})}
-
-    <div class="quiz-progress-track mb-16">
-      <div class="quiz-progress-fill" style="width:${percent}%"></div>
+    <div class="topbar">
+      <button id="backHome">← Выйти</button>
+      <span>Карточки · ${cardIndex + 1} / ${total}</span>
     </div>
-
-    <div class="flashcard-wrap">
-      <div class="flashcard" id="flashcard">
-        <div class="flashcard-face flashcard-front">
-          <div class="flashcard-badge">${card.reps === 0 ? 'Новая' : 'Повторение'}</div>
-          <div class="flashcard-word">${escapeHtml(front)}</div>
-          <div class="flashcard-tap-hint">Нажмите, чтобы показать ответ</div>
-        </div>
-        <div class="flashcard-face flashcard-back">
-          <div class="flashcard-badge">Ответ</div>
-          <div class="flashcard-word">${escapeHtml(back)}</div>
-        </div>
-      </div>
+    <div class="progress-bar"><div class="progress-bar-fill" style="width:${percent}%"></div></div>
+    <div class="card" id="card">
+      <div class="badge">${card.reps === 0 ? 'Новая' : 'Повторение'}</div>
+      <div class="front">${escapeHtml(front)}</div>
+      <div class="hint">Нажмите, чтобы показать перевод</div>
     </div>
-
     <div id="ratingArea"></div>
   `;
-  bindTopBar({ onBack: () => { if (confirm('Выйти?')) renderHome(); } });
-
-  const fc = document.getElementById('flashcard');
-  fc.addEventListener('click', () => flipCard(word, front, back));
+  document.getElementById('backHome').addEventListener('click', () => {
+    if (confirm('Выйти из карточек?')) renderHome();
+  });
+  document.getElementById('card').addEventListener('click', () => flipCard(word, front, back));
 }
-
 function flipCard(word, front, back) {
   if (cardFlipped) return;
   cardFlipped = true;
-  document.getElementById('flashcard').classList.add('flipped');
+  const cardEl = document.getElementById('card');
+  cardEl.innerHTML = `<div class="badge">Перевод</div><div class="front">${escapeHtml(front)}</div><div class="back">${escapeHtml(back)}</div>`;
   const card = getCard(word.en);
-  const preview = {
-    again: schedule(card, 0).interval, hard: schedule(card, 1).interval,
-    good:  schedule(card, 2).interval, easy: schedule(card, 3).interval,
-  };
+
+  // ВАЖНО: для каждой кнопки считаем интервал на КОПИИ карточки,
+  // чтобы preview не портил саму карточку и каждая кнопка показывала своё.
+  const pAgain = schedule({ ...card }, 0).interval;
+  const pHard  = schedule({ ...card }, 1).interval;
+  const pGood  = schedule({ ...card }, 2).interval;
+  const pEasy  = schedule({ ...card }, 3).interval;
+
   const area = document.getElementById('ratingArea');
   area.innerHTML = `
-    <div class="rating-grid" style="margin-top:16px;">
-      <button class="rating-btn again" data-q="0">Again<span class="rating-interval">${intervalLabel(preview.again)}</span></button>
-      <button class="rating-btn hard"  data-q="1">Hard<span class="rating-interval">${intervalLabel(preview.hard)}</span></button>
-      <button class="rating-btn good"  data-q="2">Good<span class="rating-interval">${intervalLabel(preview.good)}</span></button>
-      <button class="rating-btn easy"  data-q="3">Easy<span class="rating-interval">${intervalLabel(preview.easy)}</span></button>
+    <div class="rating">
+      <button class="again" data-q="0">Again<span class="interval">${intervalLabel(pAgain)}</span></button>
+      <button class="hard"  data-q="1">Hard<span class="interval">${intervalLabel(pHard)}</span></button>
+      <button class="good"  data-q="2">Good<span class="interval">${intervalLabel(pGood)}</span></button>
+      <button class="easy"  data-q="3">Easy<span class="interval">${intervalLabel(pEasy)}</span></button>
     </div>
   `;
   area.querySelectorAll('button').forEach(btn => {
     btn.addEventListener('click', () => rateCard(word, parseInt(btn.dataset.q, 10)));
   });
 }
-
 function rateCard(word, quality) {
   applyRating(word.en, quality);
   if (quality === 0) { markDifficult(word.en); cardQueue.push(word); }
   else if (quality >= 2) markCorrectDifficult(word.en);
   cardSessionDone++;
-  incrementDailyCount(1); updateStreak();
+  incrementDailyCount(1); updateSeries();
   cardIndex++; renderCard();
 }
-
 function renderCardsResult() {
-  lastRender = renderCardsResult;
   const due = dueWords().length;
   app.innerHTML = `
-    ${topBar({ back: true, title: 'Готово', onBack: renderHome })}
-    <div class="card result-card">
-      <div class="result-emoji">🎉</div>
-      <div class="result-title">Сессия завершена</div>
-      <div class="result-sub">Повторено карточек: <b>${cardSessionDone}</b></div>
-      <div class="result-stats">
-        <div>
-          <div class="result-stat-value">${cardSessionDone}</div>
-          <div class="result-stat-label">Пройдено</div>
-        </div>
-        <div>
-          <div class="result-stat-value">${due}</div>
-          <div class="result-stat-label">Осталось</div>
-        </div>
-        <div>
-          <div class="result-stat-value" style="color:var(--warning);">${stats.streak}</div>
-          <div class="result-stat-label">Стрик</div>
-        </div>
-      </div>
-      <button class="btn full" id="backHome">В меню</button>
+    <div class="result">
+      <h2>Сессия завершена 🎉</h2>
+      <p>Пройдено: <b>${cardSessionDone}</b><br>Осталось к повторению: <b>${due}</b></p>
+      <button class="btn" id="backHome">В меню</button>
     </div>
-    ${bottomNav('home')}
   `;
-  bindTopBar({ onBack: renderHome });
-  bindBottomNav();
   document.getElementById('backHome').addEventListener('click', renderHome);
 }
 
 /* =========================================================================
-   СТАТИСТИКА
+   МОДУЛЬ 16. СТАТИСТИКА
    ========================================================================= */
 function renderStats() {
-  lastRender = renderStats;
   const statuses = { new: 0, learning: 0, young: 0, mature: 0 };
   const rows = getWords().map(w => {
     const c = getProgress()[w.en];
@@ -3032,133 +1497,110 @@ function renderStats() {
   const last14 = [];
   for (let i = 13; i >= 0; i--) { const d = addDays(-i); last14.push({ date: d, count: stats.dailyCounts[d] || 0 }); }
   const maxCount = Math.max(1, ...last14.map(d => d.count));
-
   app.innerHTML = `
-    ${topBar({ back: true, title: 'Статистика', onBack: renderHome })}
-
-    <div class="mini-stats">
-      <div class="stat-pill streak">
-        <div class="stat-pill-value">${stats.streak}</div>
-        <div class="stat-pill-label">Стрик 🔥</div>
-      </div>
-      <div class="stat-pill due">
-        <div class="stat-pill-value">${dueCount}</div>
-        <div class="stat-pill-label">К повтору</div>
-      </div>
-      <div class="stat-pill difficult">
-        <div class="stat-pill-value">${diffCount}</div>
-        <div class="stat-pill-label">Сложных</div>
-      </div>
+    <div class="topbar">
+      <button id="backHome">← Назад</button>
+      <span>Статистика · ${deckName(activeDeckId)}</span>
     </div>
-
-    <h2 class="section-title">Статусы слов</h2>
-    <div class="card mb-16" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-      <div><span class="tag new">Новые</span> <b style="margin-left:6px;">${statuses.new}</b></div>
-      <div><span class="tag learning">Учатся</span> <b style="margin-left:6px;">${statuses.learning}</b></div>
-      <div><span class="tag young">Молодые</span> <b style="margin-left:6px;">${statuses.young}</b></div>
-      <div><span class="tag mature">Зрелые</span> <b style="margin-left:6px;">${statuses.mature}</b></div>
-    </div>
-
-    <h2 class="section-title">Активность за 14 дней</h2>
-    <div class="chart mb-16">
+    <p style="font-size:14px;color:#555;line-height:1.8;">
+      Всего: <b>${getWords().length}</b> · К повторению: <b>${dueCount}</b> · 🔁 Сложных: <b>${diffCount}</b><br>
+      🔥 Серия дней: <b>${stats.series}</b> · Сегодня: <b>${todayCount()}</b> / ${settings.dailyGoal}<br>
+      <span class="tag new">Новые</span> ${statuses.new} ·
+      <span class="tag learning">Изучаются</span> ${statuses.learning} ·
+      <span class="tag young">Молодые</span> ${statuses.young} ·
+      <span class="tag mature">Зрелые</span> ${statuses.mature}
+    </p>
+    <h2 style="margin-top:24px;">Активность за 14 дней</h2>
+    <div style="display:flex;align-items:flex-end;gap:4px;height:100px;padding:10px;background:#f8f9fc;border-radius:10px;">
       ${last14.map(d => `
-        <div class="chart-bar">
-          <div class="chart-bar-fill" style="height:${Math.round(d.count / maxCount * 70)}px;opacity:${d.count ? 1 : 0.2};"></div>
-          <div class="chart-bar-label">${d.date.slice(8)}</div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+          <div style="font-size:10px;color:#888;">${d.count || ''}</div>
+          <div style="width:100%;background:#2a5298;border-radius:3px 3px 0 0;height:${Math.round(d.count / maxCount * 70)}px;min-height:2px;"></div>
+          <div style="font-size:9px;color:#aaa;">${d.date.slice(8)}</div>
         </div>
       `).join('')}
     </div>
-
-    <h2 class="section-title">Все слова (${rows.length})</h2>
+    <h2 style="margin-top:24px;">Все слова</h2>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>EN</th><th>RU</th><th>Статус</th><th>Интервал</th><th>След.</th><th>Ошибок</th></tr></thead>
+        <thead><tr><th>English</th><th>Русский</th><th>Статус</th><th>Интервал</th><th>Ease</th><th>След.</th><th>Повт.</th><th>Ошибок</th></tr></thead>
         <tbody>
           ${rows.map(r => `
             <tr>
               <td><b>${escapeHtml(r.en)}</b></td>
               <td>${escapeHtml(r.ru)}</td>
-              <td>${r.difficult ? '<span class="tag difficult">!</span> ' : ''}<span class="tag ${r.st}">${statusName(r.st)}</span></td>
+              <td>${r.difficult ? '<span class="tag difficult">Сложное</span> ' : ''}<span class="tag ${r.st}">${statusName(r.st)}</span></td>
               <td>${r.interval ? intervalLabel(r.interval) : '—'}</td>
-              <td>${r.due}</td>
-              <td>${r.lapses}</td>
+              <td>${r.ease}</td><td>${r.due}</td><td>${r.reps}</td><td>${r.lapses}</td>
             </tr>
           `).join('')}
         </tbody>
       </table>
     </div>
-    ${bottomNav('stats')}
   `;
-  bindTopBar({ onBack: renderHome });
-  bindBottomNav();
+  document.getElementById('backHome').addEventListener('click', renderMore);
 }
 
 /* =========================================================================
-   НАСТРОЙКИ
+   МОДУЛЬ 17. НАСТРОЙКИ
    ========================================================================= */
 function renderSettings() {
-  lastRender = renderSettings;
   app.innerHTML = `
-    ${topBar({ back: true, title: 'Настройки', onBack: renderMore })}
-
-    <div class="card mb-16">
-      <div class="form-row">
-        <label>Направление по умолчанию</label>
-        <select class="select" id="sDir">
-          <option value="en-ru" ${settings.direction==='en-ru'?'selected':''}>EN → RU</option>
-          <option value="ru-en" ${settings.direction==='ru-en'?'selected':''}>RU → EN</option>
-          <option value="mix"   ${settings.direction==='mix'?'selected':''}>🔀 Смешанное</option>
-        </select>
-      </div>
-      <div class="form-row">
-        <label>Режим ответа</label>
-        <select class="select" id="sMode">
-          <option value="mc"     ${settings.quizMode==='mc'?'selected':''}>Варианты</option>
-          <option value="typing" ${settings.quizMode==='typing'?'selected':''}>Ввод</option>
-          <option value="mixed"  ${settings.quizMode==='mixed'?'selected':''}>🔀 Смешанное</option>
-        </select>
-      </div>
-      <div class="form-row">
-        <label>Длина сессии</label>
-        <select class="select" id="sSize">
-          <option value="10" ${settings.quizSize===10?'selected':''}>10</option>
-          <option value="20" ${settings.quizSize===20?'selected':''}>20</option>
-          <option value="50" ${settings.quizSize===50?'selected':''}>50</option>
-          <option value="0"  ${settings.quizSize===0?'selected':''}>Все</option>
-        </select>
-      </div>
+    <div class="topbar">
+      <button id="backHome">← Назад</button>
+      <span>Настройки</span>
     </div>
-
-    <div class="card mb-16">
-      <div class="form-row">
-        <label>Дневная цель (слов)</label>
-        <input class="input" type="number" id="sGoal" min="1" max="500" value="${settings.dailyGoal}">
-      </div>
-      <div class="form-row">
-        <label>Выход из «Сложных» (правильных подряд)</label>
-        <input class="input" type="number" id="sDiffExit" min="1" max="10" value="${settings.difficultToExit}">
-      </div>
+    <div class="form-row">
+      <label>Направление по умолчанию</label>
+      <select id="sDir">
+        <option value="en-ru" ${settings.direction==='en-ru'?'selected':''}>EN → RU</option>
+        <option value="ru-en" ${settings.direction==='ru-en'?'selected':''}>RU → EN</option>
+        <option value="mix"   ${settings.direction==='mix'?'selected':''}>🔀 Смешанное</option>
+      </select>
     </div>
-
-    <div class="card mb-16">
-      <div class="form-row">
-        <label>Максимальный интервал (дней)</label>
-        <input class="input" type="number" id="sMax" min="7" max="3650" value="${settings.maxInterval}">
-      </div>
-      <div class="form-row">
-        <label>Starting ease (2.5 — стандарт)</label>
-        <input class="input" type="number" id="sEase" min="1.3" max="3.0" step="0.1" value="${settings.startingEase}">
-      </div>
+    <div class="form-row">
+      <label>Режим ответа</label>
+      <select id="sMode">
+        <option value="mc"     ${settings.quizMode==='mc'?'selected':''}>Варианты</option>
+        <option value="typing" ${settings.quizMode==='typing'?'selected':''}>Ввод</option>
+        <option value="mixed"  ${settings.quizMode==='mixed'?'selected':''}>🔀 Смешанное</option>
+      </select>
     </div>
-
-    <div class="btn-row">
+    <div class="form-row">
+      <label>Длина сессии викторины</label>
+      <select id="sSize">
+        <option value="10" ${settings.quizSize===10?'selected':''}>10</option>
+        <option value="20" ${settings.quizSize===20?'selected':''}>20</option>
+        <option value="50" ${settings.quizSize===50?'selected':''}>50</option>
+        <option value="0"  ${settings.quizSize===0?'selected':''}>Все</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label>Дневная цель (слов)</label>
+      <input type="number" id="sGoal" min="1" max="500" value="${settings.dailyGoal}">
+    </div>
+    <div class="form-row">
+      <label>Сколько правильных подряд, чтобы выйти из «Сложных»</label>
+      <input type="number" id="sDiffExit" min="1" max="10" value="${settings.difficultToExit}">
+    </div>
+    <div class="form-row">
+      <label>Лимит новых в день</label>
+      <input type="number" id="sNew" min="0" max="200" value="${settings.newPerDay}">
+    </div>
+    <div class="form-row">
+      <label>Максимальный интервал (дней)</label>
+      <input type="number" id="sMax" min="7" max="3650" value="${settings.maxInterval}">
+    </div>
+    <div class="form-row">
+      <label>Starting ease</label>
+      <input type="number" id="sEase" min="1.3" max="3.0" step="0.1" value="${settings.startingEase}">
+    </div>
+    <div style="text-align:center;margin-top:16px;">
       <button class="btn" id="saveSet">Сохранить</button>
       <button class="btn secondary" id="cancel">Отмена</button>
     </div>
-    ${bottomNav('more')}
   `;
-  bindTopBar({ onBack: renderMore });
-  bindBottomNav();
+  document.getElementById('backHome').addEventListener('click', renderMore);
   document.getElementById('cancel').addEventListener('click', renderMore);
   document.getElementById('saveSet').addEventListener('click', () => {
     settings.direction   = document.getElementById('sDir').value;
@@ -3166,6 +1608,7 @@ function renderSettings() {
     settings.quizSize    = parseInt(document.getElementById('sSize').value, 10);
     settings.dailyGoal   = Math.max(1, parseInt(document.getElementById('sGoal').value, 10) || 20);
     settings.difficultToExit = Math.max(1, parseInt(document.getElementById('sDiffExit').value, 10) || 2);
+    settings.newPerDay   = Math.max(0, parseInt(document.getElementById('sNew').value, 10) || 0);
     settings.maxInterval = Math.max(7, parseInt(document.getElementById('sMax').value, 10) || 365);
     settings.startingEase= Math.min(3.0, Math.max(1.3, parseFloat(document.getElementById('sEase').value) || 2.5));
     saveSettings(); renderMore();
@@ -3173,132 +1616,45 @@ function renderSettings() {
 }
 
 /* =========================================================================
-   НАПОМИНАНИЯ
-   ========================================================================= */
-function renderReminders() {
-  lastRender = renderReminders;
-  const perm = notificationPermission();
-  const supported = notificationsSupported();
-  let statusClass = 'off', statusText = '';
-  if (!supported) { statusText = 'Браузер не поддерживает уведомления.'; }
-  else if (perm === 'granted') { statusClass = 'ok'; statusText = '✓ Уведомления разрешены'; }
-  else if (perm === 'denied') { statusText = '⛔ Уведомления запрещены. Разрешите в настройках браузера.'; }
-  else { statusClass = 'warn'; statusText = 'Разрешение не запрошено'; }
-
-  app.innerHTML = `
-    ${topBar({ back: true, title: 'Напоминания', onBack: renderMore })}
-
-    <p class="text-dim mb-16" style="font-size:14px;line-height:1.6;">
-      Приложение напомнит заниматься, если вы давно не открывали тренажёр. Показывается только если сегодня ещё не занимались.
-    </p>
-
-    <div class="status-banner ${statusClass}">${statusText}</div>
-
-    ${supported && perm !== 'granted' ? `
-      <button class="btn full mb-16" id="btnGrant">${ICONS.bell} Разрешить уведомления</button>
-    ` : ''}
-
-    <div class="card mb-16">
-      <div class="form-row">
-        <label>Напоминания</label>
-        <label class="toggle">
-          <input type="checkbox" id="remEnabled" ${reminder.enabled ? 'checked' : ''}>
-          <span class="toggle-track"><span class="toggle-thumb"></span></span>
-          <span>${reminder.enabled ? 'Включены' : 'Выключены'}</span>
-        </label>
-      </div>
-      <div class="form-row">
-        <label>Время</label>
-        <input class="input" type="time" id="remTime" value="${reminder.time}">
-      </div>
-    </div>
-
-    <button class="btn secondary full mb-16" id="btnTest">📨 Тестовое уведомление</button>
-
-    <p class="text-muted" style="font-size:12px;line-height:1.6;">
-      <b>Важно:</b> напоминания работают, пока вкладка с сайтом открыта (можно в фоне). Для надёжности установите PWA и держите его открытым.
-    </p>
-    ${bottomNav('more')}
-  `;
-  bindTopBar({ onBack: renderMore });
-  bindBottomNav();
-
-  const grantBtn = document.getElementById('btnGrant');
-  if (grantBtn) grantBtn.addEventListener('click', async () => {
-    const res = await requestNotificationPermission();
-    if (res === 'granted') { alert('Уведомления разрешены!'); renderReminders(); }
-    else if (res === 'denied') alert('Вы запретили уведомления. Разрешите в настройках браузера.');
-  });
-
-  document.getElementById('remEnabled').addEventListener('change', async e => {
-    reminder.enabled = e.target.checked;
-    saveReminder();
-    if (reminder.enabled) {
-      const p = await requestNotificationPermission();
-      if (p === 'granted') checkReminder();
-    }
-    renderReminders();
-  });
-  document.getElementById('remTime').addEventListener('change', e => {
-    reminder.time = e.target.value; saveReminder();
-  });
-  document.getElementById('btnTest').addEventListener('click', async () => {
-    if (notificationPermission() !== 'granted') {
-      const res = await requestNotificationPermission();
-      if (res !== 'granted') { alert('Сначала разрешите уведомления.'); return; }
-    }
-    testNotification();
-  });
-}
-
-/* =========================================================================
-   ИМПОРТ / ЭКСПОРТ
+   МОДУЛЬ 18. ИМПОРТ / ЭКСПОРТ (с уменьшенными иконками)
    ========================================================================= */
 function renderData() {
-  lastRender = renderData;
   app.innerHTML = `
-    ${topBar({ back: true, title: 'Импорт / экспорт', onBack: renderMore })}
-
-    <h2 class="section-title">Импорт слов в колоду</h2>
-    <div class="card mb-16">
-      <p class="text-dim mb-16" style="font-size:13px;">TXT · CSV · TSV</p>
-      <button class="btn full" id="impFile">${ICONS.upload} Загрузить файл</button>
-      <input type="file" id="impInput" accept=".txt,.csv,.tsv" style="display:none;">
-      <p class="text-muted mt-16" style="font-size:12px;" id="impMsg"></p>
+    <div class="topbar">
+      <button id="backHome">← Назад</button>
+      <span>Импорт / экспорт · ${deckName(activeDeckId)}</span>
     </div>
-
-    <h2 class="section-title">Экспорт колоды</h2>
-    <div class="card mb-16">
-      <div class="btn-row">
-        <button class="btn secondary" id="expCSV">CSV</button>
-        <button class="btn secondary" id="expTXT">TXT</button>
-        <button class="btn secondary" id="expTSV">TSV</button>
-      </div>
+    <h2>📥 Импорт слов в колоду</h2>
+    <p style="font-size:14px;color:#555;margin-bottom:12px;">TXT / CSV / TSV.</p>
+    <div class="io-actions">
+      <label class="upload-label" for="impFile">📁 Выбрать файл</label>
+      <input type="file" id="impFile" accept=".txt,.csv,.tsv" style="display:none;">
     </div>
-
-    <h2 class="section-title">Полный бэкап</h2>
-    <div class="card mb-16">
-      <p class="text-dim mb-16" style="font-size:13px;">Все колоды, прогресс, настройки, статистика.</p>
-      <button class="btn full mb-8" id="expAll">${ICONS.download} Скачать всё</button>
-      <button class="btn secondary full" id="impAll">${ICONS.upload} Загрузить всё</button>
-      <input type="file" id="impAllInput" accept=".json" style="display:none;">
-      <p class="text-muted mt-16" style="font-size:12px;" id="allMsg"></p>
+    <p class="hint" id="impMsg"></p>
+    <h2 style="margin-top:28px;">📤 Экспорт колоды</h2>
+    <div class="io-actions">
+      <button class="btn" id="expCSV">📊 CSV</button>
+      <button class="btn" id="expTXT">📄 TXT</button>
+      <button class="btn" id="expTSV">📋 TSV</button>
     </div>
-    ${bottomNav('more')}
+    <h2 style="margin-top:28px;">💾 Полный бэкап всего</h2>
+    <div class="io-actions">
+      <button class="btn" id="expAll">⬇ Скачать всё</button>
+      <label class="upload-label" for="impAll">⬆ Загрузить всё</label>
+      <input type="file" id="impAll" accept=".json" style="display:none;">
+    </div>
+    <p class="hint" id="allMsg"></p>
   `;
-  bindTopBar({ onBack: renderMore });
-  bindBottomNav();
-
-  document.getElementById('impFile').addEventListener('click', () => document.getElementById('impInput').click());
-  document.getElementById('impInput').addEventListener('change', e => {
+  document.getElementById('backHome').addEventListener('click', renderMore);
+  document.getElementById('impFile').addEventListener('change', e => {
     const file = e.target.files[0]; if (!file) return;
     const reader = new FileReader();
     reader.onload = ev => {
       const text = ev.target.result;
       const parsed = file.name.toLowerCase().endsWith('.csv') ? parseCSV(text) : parseAny(text);
       if (!parsed || parsed.length === 0) {
-        document.getElementById('impMsg').textContent = 'Не найдено слов.';
-        document.getElementById('impMsg').style.color = 'var(--danger)'; return;
+        document.getElementById('impMsg').textContent = 'Не найдено ни одного слова.';
+        document.getElementById('impMsg').style.color = '#e74c3c'; return;
       }
       const replace = getWords().length > 0
         ? confirm(`Найдено ${parsed.length}.\n\nOK — добавить\nОтмена — заменить`)
@@ -3314,21 +1670,25 @@ function renderData() {
         saveProgressMap(); saveDifficultMap();
       }
       document.getElementById('impMsg').textContent = `Импортировано: ${parsed.length}.`;
-      document.getElementById('impMsg').style.color = 'var(--success)';
+      document.getElementById('impMsg').style.color = '#2ecc71';
     };
     reader.readAsText(file, 'UTF-8');
   });
-
+  const download = (content, filename, mime = 'text/plain') => {
+    const blob = new Blob([content], { type: mime + ';charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = filename; a.click();
+    URL.revokeObjectURL(url);
+  };
   document.getElementById('expCSV').addEventListener('click', () => download('\uFEFF' + toCSV(getWords()), 'deck-' + todayStr() + '.csv', 'text/csv'));
   document.getElementById('expTXT').addEventListener('click', () => download(toTSV(getWords()), 'deck-' + todayStr() + '.txt'));
   document.getElementById('expTSV').addEventListener('click', () => download(toTSV(getWords()), 'deck-' + todayStr() + '.tsv'));
   document.getElementById('expAll').addEventListener('click', () => {
     const data = { version: 5, decks, activeDeckId, wordsByDeck, progressByDeck,
-      difficultByDeck, settings, stats, reminder, theme, customLogo, exported: new Date().toISOString() };
-    download(JSON.stringify(data, null, 2), 'aerolex-full-' + todayStr() + '.json', 'application/json');
+      difficultByDeck, settings, stats, reminder, exported: new Date().toISOString() };
+    download(JSON.stringify(data, null, 2), 'aeroen-full-' + todayStr() + '.json', 'application/json');
   });
-  document.getElementById('impAll').addEventListener('click', () => document.getElementById('impAllInput').click());
-  document.getElementById('impAllInput').addEventListener('change', e => {
+  document.getElementById('impAll').addEventListener('change', e => {
     const file = e.target.files[0]; if (!file) return;
     const reader = new FileReader();
     reader.onload = ev => {
@@ -3342,16 +1702,13 @@ function renderData() {
         settings = Object.assign(settings, d.settings || {});
         stats = Object.assign(stats, d.stats || {});
         reminder = Object.assign(reminder, d.reminder || {});
-        if (d.theme) theme = d.theme;
-        if (d.customLogo !== undefined) customLogo = d.customLogo;
-        applyTheme();
         saveAll();
         document.getElementById('allMsg').textContent = 'Импорт успешен.';
-        document.getElementById('allMsg').style.color = 'var(--success)';
+        document.getElementById('allMsg').style.color = '#2ecc71';
         setTimeout(renderHome, 700);
       } catch (err) {
         document.getElementById('allMsg').textContent = 'Ошибка: ' + err.message;
-        document.getElementById('allMsg').style.color = 'var(--danger)';
+        document.getElementById('allMsg').style.color = '#e74c3c';
       }
     };
     reader.readAsText(file, 'UTF-8');
@@ -3359,12 +1716,155 @@ function renderData() {
 }
 
 /* =========================================================================
+   МОДУЛЬ 19. НАПОМИНАНИЯ
+   ========================================================================= */
+let reminderTimer = null;
+function notificationsSupported() { return 'Notification' in window; }
+function notificationPermission() {
+  return notificationsSupported() ? Notification.permission : 'unsupported';
+}
+function requestNotificationPermission() {
+  return new Promise(resolve => {
+    if (!notificationsSupported()) return resolve('unsupported');
+    if (Notification.permission === 'granted') return resolve('granted');
+    if (Notification.permission === 'denied') return resolve('denied');
+    Notification.requestPermission().then(resolve);
+  });
+}
+function showNotification(title, body) {
+  if (notificationPermission() !== 'granted') return false;
+  try {
+    if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.ready.then(reg => {
+        reg.showNotification(title, {
+          body,
+          icon: './plane192.png',
+          badge: './plane192.png',
+          tag: 'aeroen-reminder',
+          renotify: true,
+          vibrate: [100, 50, 100],
+          data: { url: './' }
+        });
+      });
+    } else {
+      new Notification(title, { body, tag: 'aeroen-reminder', icon: './plane192.png' });
+    }
+    return true;
+  } catch (e) { console.warn('Notification failed:', e); return false; }
+}
+function startReminderLoop() {
+  if (reminderTimer) clearInterval(reminderTimer);
+  reminderTimer = setInterval(checkReminder, 30000);
+  checkReminder();
+}
+function checkReminder() {
+  if (!reminder.enabled) return;
+  if (notificationPermission() !== 'granted') return;
+  const now = new Date();
+  const current = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+  const today = todayStr();
+  if (stats.lastStudyDate === today) return;
+  if (reminder.lastShown === today) return;
+  if (current < reminder.time) return;
+  const due = dueWords().length;
+  const body = due > 0 ? `У вас ${due} слов к повторению.` : `Пора позаниматься — не теряйте серию!`;
+  const ok = showNotification('✈️ AeroEN — время учить', body);
+  if (ok) { reminder.lastShown = today; saveReminder(); }
+}
+function testNotification() {
+  const ok = showNotification('✈️ Тестовое уведомление', 'Если вы это видите — напоминания работают!');
+  if (!ok) alert('Не удалось показать уведомление. Проверьте разрешение в браузере.');
+}
+function renderReminders() {
+  const perm = notificationPermission();
+  const supported = notificationsSupported();
+  let statusClass = 'off', statusText = '';
+  if (!supported) statusText = '⚠️ Браузер не поддерживает уведомления.';
+  else if (perm === 'granted') { statusClass = 'ok'; statusText = '✅ Уведомления разрешены.'; }
+  else if (perm === 'denied') statusText = '⛔ Вы запретили уведомления. Разрешите их в настройках браузера.';
+  else { statusClass = 'warn'; statusText = '⚠️ Разрешение не запрошено.'; }
+
+  app.innerHTML = `
+    <div class="topbar">
+      <button id="backHome">← Назад</button>
+      <span>Напоминания</span>
+    </div>
+    <h2>🔔 Напоминания</h2>
+    <p style="font-size:14px;color:#555;line-height:1.6;margin-bottom:16px;">
+      Браузер напомнит вам заниматься, если вы давно не открывали тренажёр.
+      Уведомление показывается, только если <b>сегодня ещё не занимались</b> и наступило выбранное время.
+    </p>
+    <div style="padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:12px;background:${statusClass==='ok'?'#e8f5e9':statusClass==='warn'?'#fff3e0':'#f5f5f5'};color:${statusClass==='ok'?'#2e7d32':statusClass==='warn'?'#e65100':'#666'};">${statusText}</div>
+    ${supported && perm !== 'granted' ? `<div style="text-align:center;margin-bottom:16px;"><button class="btn" id="btnGrant">🔔 Разрешить уведомления</button></div>` : ''}
+    <div class="form-row">
+      <label>Напоминания включены</label>
+      <div class="radio-group" id="enabledGroup">
+        <label data-v="on" class="${reminder.enabled ? 'active' : ''}"><input type="radio" name="enabled" value="on" ${reminder.enabled ? 'checked' : ''}>Вкл</label>
+        <label data-v="off" class="${!reminder.enabled ? 'active' : ''}"><input type="radio" name="enabled" value="off" ${!reminder.enabled ? 'checked' : ''}>Выкл</label>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>Время напоминания</label>
+      <input type="time" id="remTime" value="${reminder.time}">
+    </div>
+    <div style="text-align:center;margin-top:20px;">
+      <button class="btn secondary" id="btnTest">📨 Проверить сейчас</button>
+    </div>
+    <p class="hint" style="margin-top:20px;line-height:1.6;">
+      <b>Важно:</b> напоминания работают, пока вкладка с тренажёром открыта (можно в фоне).
+    </p>
+  `;
+  document.getElementById('backHome').addEventListener('click', renderMore);
+  if (document.getElementById('btnGrant')) {
+    document.getElementById('btnGrant').addEventListener('click', async () => {
+      const res = await requestNotificationPermission();
+      if (res === 'granted') { alert('Уведомления разрешены!'); renderReminders(); }
+      else if (res === 'denied') alert('Вы запретили уведомления. Чтобы включить, откройте настройки браузера.');
+      else alert('Браузер не поддерживает уведомления.');
+    });
+  }
+  const g = document.getElementById('enabledGroup');
+  g.addEventListener('change', e => {
+    reminder.enabled = e.target.value === 'on';
+    saveReminder();
+    g.querySelectorAll('label').forEach(l => l.classList.toggle('active', l.dataset.v === e.target.value));
+    if (reminder.enabled) requestNotificationPermission().then(p => { if (p === 'granted') checkReminder(); });
+  });
+  document.getElementById('remTime').addEventListener('change', e => { reminder.time = e.target.value; saveReminder(); });
+  document.getElementById('btnTest').addEventListener('click', async () => {
+    if (notificationPermission() !== 'granted') {
+      const res = await requestNotificationPermission();
+      if (res !== 'granted') { alert('Сначала разрешите уведомления.'); return; }
+    }
+    testNotification();
+  });
+}
+
+/* =========================================================================
+   МОДУЛЬ 20. PWA (только регистрация SW, без UI установки)
+   ========================================================================= */
+function initPWA() {
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').then(reg => {
+        console.log('SW registered:', reg.scope);
+      }).catch(err => {
+        console.warn('SW registration failed:', err);
+      });
+    });
+  }
+}
+
+/* =========================================================================
    СТАРТ
    ========================================================================= */
-initPWA();
-loadAll();
-startReminderLoop();
-renderHome();
+(async function init() {
+  initPWA();
+  loadAll();
+  await loadSystemDecks();
+  startReminderLoop();
+  renderHome();
+})();
 </script>
 </body>
 </html>
