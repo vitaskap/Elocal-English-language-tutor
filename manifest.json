@@ -1,5 +1,5 @@
 {
-  "id": "/aviation-quiz/",
+  "id": "/",
   "name": "Авиационный английский — Тренажёр",
   "short_name": "Aviation EN",
   "description": "Викторина и SRS-карточки для авиационного английского",
@@ -30,6 +30,5 @@
       "type": "image/png",
       "purpose": "maskable"
     }
-  ],
-  "screenshots": []
+  ]
 }
