@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#2a5298">
+<meta name="theme-color" content="#6d28d9">
 <title>AeroEN — Авиационный английский</title>
 <link rel="manifest" href="./manifest.json">
 <link rel="apple-touch-icon" href="./plane192.png">
@@ -11,273 +11,331 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    background: linear-gradient(135deg, #4c1d95 0%, #6d28d9 50%, #7c3aed 100%);
     min-height: 100vh; display: flex; align-items: center; justify-content: center;
     padding: 20px; color: #fff;
     padding-top: max(20px, env(safe-area-inset-top));
     padding-bottom: max(20px, env(safe-area-inset-bottom));
   }
   .container {
-    background: #fff; color: #222; border-radius: 16px; padding: 24px;
-    max-width: 860px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    background: #fff; color: #1f1f2e; border-radius: 24px; padding: 28px;
+    max-width: 860px; width: 100%;
+    box-shadow: 0 24px 80px rgba(76, 29, 149, 0.45);
     max-height: 95vh; overflow-y: auto;
   }
-  h1 { font-size: 22px; margin-bottom: 8px; text-align: center; }
-  h2 { font-size: 20px; margin-bottom: 16px; }
-  .subtitle { text-align: center; color: #666; font-size: 14px; margin-bottom: 20px; }
+  h1 { font-size: 24px; margin-bottom: 8px; text-align: center; color: #4c1d95; }
+  h2 { font-size: 20px; margin-bottom: 16px; color: #4c1d95; }
+  .subtitle { text-align: center; color: #6b7280; font-size: 14px; margin-bottom: 20px; }
 
   .home-top {
     display: flex; justify-content: space-between; align-items: center;
     margin-bottom: 16px; gap: 8px;
   }
   .deck-switcher {
-    display: flex; align-items: center; gap: 6px;
-    background: #f0f4ff; border-radius: 10px; padding: 6px 10px;
-    flex: 1; cursor: pointer; border: 2px solid transparent; transition: border-color 0.15s;
+    display: flex; align-items: center; gap: 8px;
+    background: #f3e8ff; border-radius: 14px; padding: 10px 14px;
+    flex: 1; cursor: pointer; border: 2px solid transparent;
+    transition: all 0.15s;
   }
-  .deck-switcher:hover { border-color: #2a5298; }
+  .deck-switcher:hover { border-color: #7c3aed; background: #ede9fe; }
   .deck-switcher .deck-name {
-    font-weight: 600; color: #2a5298; flex: 1;
+    font-weight: 700; color: #6d28d9; flex: 1;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-  .deck-switcher .deck-count { font-size: 13px; color: #666; }
-  .deck-switcher .arrow { color: #2a5298; font-size: 12px; }
+  .deck-switcher .deck-count { font-size: 12px; color: #7c3aed; opacity: 0.75; }
+  .deck-switcher .arrow { color: #7c3aed; font-size: 12px; }
   .icon-menu-btn {
-    background: #f0f4ff; border: none; border-radius: 10px;
-    padding: 10px 14px; font-size: 18px; cursor: pointer;
-    color: #2a5298; transition: background 0.15s;
+    background: #f3e8ff; border: none; border-radius: 14px;
+    padding: 12px 16px; font-size: 18px; cursor: pointer;
+    color: #6d28d9; transition: background 0.15s;
   }
-  .icon-menu-btn:hover { background: #dbe6ff; }
+  .icon-menu-btn:hover { background: #e9d5ff; }
 
   .deck-header { text-align: center; margin-bottom: 20px; }
   .deck-header h1 { font-size: 22px; margin-bottom: 6px; }
   .deck-header .subtitle { font-size: 13px; margin-bottom: 0; }
 
-  .big-actions { display: grid; gap: 10px; }
+  .big-actions { display: grid; gap: 12px; }
   .big-actions button {
-    padding: 18px; font-size: 16px; border: 2px solid #2a5298;
-    background: #fff; color: #2a5298; border-radius: 12px;
-    cursor: pointer; transition: all 0.15s; font-weight: 600;
+    padding: 20px 22px; font-size: 16px;
+    border: none; border-radius: 18px;
+    cursor: pointer; transition: all 0.15s; font-weight: 700;
     display: flex; justify-content: space-between; align-items: center;
+    box-shadow: 0 4px 14px rgba(109, 40, 217, 0.12);
   }
-  .big-actions button:hover:not(:disabled) { background: #2a5298; color: #fff; }
-  .big-actions button:disabled { opacity: 0.4; cursor: not-allowed; }
-  .big-actions button.primary { background: #2a5298; color: #fff; }
-  .big-actions button.primary:hover:not(:disabled) { background: #1e3c72; }
-  .big-actions button.difficult { border-color: #e74c3c; color: #e74c3c; }
-  .big-actions button.difficult:hover:not(:disabled) { background: #e74c3c; color: #fff; }
-  .big-actions .btn-count { font-size: 13px; font-weight: 400; opacity: 0.75; }
+  .big-actions button:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+  .big-actions button.primary {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    color: #fff;
+  }
+  .big-actions button.primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(109, 40, 217, 0.35);
+  }
+  .big-actions button.secondary-action {
+    background: #f3e8ff; color: #6d28d9;
+  }
+  .big-actions button.secondary-action:hover:not(:disabled) {
+    background: #e9d5ff; transform: translateY(-2px);
+  }
+  .big-actions button.difficult {
+    background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+    color: #fff;
+  }
+  .big-actions button.difficult:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(225, 29, 72, 0.35);
+  }
+  .big-actions .btn-count { font-size: 13px; font-weight: 500; opacity: 0.85; }
 
   .series-box {
-    background: linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%);
-    color: #fff; border-radius: 12px; padding: 14px;
+    background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+    color: #fff; border-radius: 18px; padding: 16px;
     text-align: center; margin-bottom: 16px;
+    box-shadow: 0 6px 20px rgba(249, 115, 22, 0.25);
   }
-  .series-box .num { font-size: 26px; font-weight: 700; }
-  .series-box .label { font-size: 12px; opacity: 0.9; }
+  .series-box .num { font-size: 28px; font-weight: 800; }
+  .series-box .label { font-size: 12px; opacity: 0.95; font-weight: 500; }
 
-  .daily-goal { text-align: center; font-size: 13px; color: #666; margin-top: 16px; }
-  .daily-goal .bar { height: 6px; background: #eee; border-radius: 3px; margin-top: 6px; overflow: hidden; }
-  .daily-goal .bar-fill { height: 100%; background: #2ecc71; transition: width 0.3s; }
+  .daily-goal { text-align: center; font-size: 13px; color: #6b7280; margin-top: 18px; }
+  .daily-goal .bar { height: 8px; background: #f3e8ff; border-radius: 4px; margin-top: 8px; overflow: hidden; }
+  .daily-goal .bar-fill {
+    height: 100%; background: linear-gradient(90deg, #7c3aed, #a855f7);
+    transition: width 0.3s; border-radius: 4px;
+  }
 
   .more-menu { display: grid; gap: 10px; margin-top: 16px; }
   .more-menu button {
-    padding: 14px 18px; font-size: 15px; border: none; background: #f5f7fa;
-    color: #333; border-radius: 10px; cursor: pointer; text-align: left;
+    padding: 14px 18px; font-size: 15px; border: none; background: #f9fafb;
+    color: #1f1f2e; border-radius: 14px; cursor: pointer; text-align: left;
     display: flex; justify-content: space-between; align-items: center;
-    transition: background 0.15s;
+    transition: all 0.15s; font-weight: 500;
   }
-  .more-menu button:hover { background: #e8ecf2; }
-  .more-menu button.danger { color: #e74c3c; }
-  .more-menu button.danger:hover { background: #fdecea; }
+  .more-menu button:hover { background: #f3e8ff; color: #6d28d9; }
+  .more-menu button.danger { color: #e11d48; }
+  .more-menu button.danger:hover { background: #ffe4e6; }
 
   .deck-list { display: grid; gap: 10px; margin-top: 12px; }
   .deck-item {
-    padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 10px;
+    padding: 16px; border: 2px solid #f3e8ff; border-radius: 14px;
     display: flex; justify-content: space-between; align-items: center; gap: 8px;
-    cursor: pointer; transition: all 0.15s;
+    cursor: pointer; transition: all 0.15s; background: #faf5ff;
   }
-  .deck-item:hover { border-color: #2a5298; background: #f0f4ff; }
-  .deck-item.active { border-color: #2a5298; background: #e8efff; }
-  .deck-item.system { background: #f8f9fc; }
+  .deck-item:hover { border-color: #a855f7; background: #f3e8ff; }
+  .deck-item.active { border-color: #6d28d9; background: #ede9fe; }
+  .deck-item.system { background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%); }
   .deck-item .info { flex: 1; min-width: 0; }
-  .deck-item .info .name { font-weight: 600; font-size: 15px; }
-  .deck-item .info .meta { font-size: 12px; color: #888; margin-top: 4px; }
+  .deck-item .info .name { font-weight: 700; font-size: 15px; color: #4c1d95; }
+  .deck-item .info .meta { font-size: 12px; color: #7c3aed; margin-top: 4px; opacity: 0.85; }
   .deck-item .badge-system {
-    display: inline-block; font-size: 10px; background: #2a5298;
-    color: #fff; padding: 2px 6px; border-radius: 4px;
-    margin-left: 6px; vertical-align: middle;
+    display: inline-block; font-size: 10px; background: #7c3aed;
+    color: #fff; padding: 2px 8px; border-radius: 6px;
+    margin-left: 6px; vertical-align: middle; font-weight: 600;
+    letter-spacing: 0.3px;
   }
   .deck-item .actions { display: flex; gap: 4px; }
   .icon-btn {
-    background: none; border: none; cursor: pointer; padding: 6px 8px;
-    font-size: 15px; border-radius: 6px; transition: background 0.15s;
+    background: none; border: none; cursor: pointer; padding: 8px 10px;
+    font-size: 15px; border-radius: 10px; transition: background 0.15s;
   }
-  .icon-btn:hover { background: #eee; }
-  .icon-btn.danger:hover { background: #fdecea; }
+  .icon-btn:hover { background: #e9d5ff; }
+  .icon-btn.danger:hover { background: #ffe4e6; }
 
-  .progress { display: flex; justify-content: space-between; font-size: 14px; color: #666; margin-bottom: 12px; }
-  .progress-bar { height: 6px; background: #eee; border-radius: 3px; overflow: hidden; margin-bottom: 20px; }
-  .progress-bar-fill { height: 100%; background: #2a5298; width: 0%; transition: width 0.3s; }
-  .question { font-size: 28px; font-weight: 600; text-align: center; margin: 20px 0; min-height: 40px; }
+  .progress { display: flex; justify-content: space-between; font-size: 14px; color: #7c3aed; margin-bottom: 12px; font-weight: 600; }
+  .progress-bar { height: 8px; background: #f3e8ff; border-radius: 4px; overflow: hidden; margin-bottom: 20px; }
+  .progress-bar-fill {
+    height: 100%; background: linear-gradient(90deg, #7c3aed, #a855f7);
+    width: 0%; transition: width 0.3s; border-radius: 4px;
+  }
+  .question { font-size: 30px; font-weight: 700; text-align: center; margin: 24px 0; min-height: 40px; color: #1f1f2e; }
   .question .dir-badge {
-    display: inline-block; font-size: 11px; color: #fff; background: #2a5298;
-    padding: 3px 10px; border-radius: 10px; margin-bottom: 10px; letter-spacing: 0.5px;
+    display: inline-block; font-size: 11px; color: #fff;
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    padding: 4px 12px; border-radius: 12px; margin-bottom: 12px;
+    letter-spacing: 0.5px; font-weight: 700;
   }
   .options { display: grid; gap: 10px; }
   .option {
-    padding: 14px; border: 2px solid #e0e0e0; border-radius: 10px;
-    background: #fafafa; cursor: pointer; font-size: 16px;
-    text-align: left; transition: all 0.15s; color: #222;
+    padding: 16px 18px; border: 2px solid #e9d5ff; border-radius: 14px;
+    background: #faf5ff; cursor: pointer; font-size: 16px;
+    text-align: left; transition: all 0.15s; color: #1f1f2e;
+    font-weight: 500;
   }
-  .option:hover:not(:disabled) { border-color: #2a5298; background: #f0f4ff; }
-  .option.correct { border-color: #2ecc71; background: #e8f8ef; color: #1a7a42; }
-  .option.wrong { border-color: #e74c3c; background: #fdecea; color: #a3281c; }
+  .option:hover:not(:disabled) { border-color: #a855f7; background: #f3e8ff; transform: translateX(4px); }
+  .option.correct { border-color: #10b981; background: #d1fae5; color: #065f46; }
+  .option.wrong { border-color: #e11d48; background: #ffe4e6; color: #9f1239; }
   .option:disabled { cursor: default; }
 
   .typing-wrap { display: grid; gap: 10px; }
   .typing-input {
-    padding: 16px; font-size: 18px; border: 2px solid #e0e0e0;
-    border-radius: 10px; font-family: inherit; outline: none; text-align: center;
+    padding: 18px; font-size: 18px; border: 2px solid #e9d5ff;
+    border-radius: 14px; font-family: inherit; outline: none; text-align: center;
+    background: #faf5ff; transition: all 0.15s;
   }
-  .typing-input:focus { border-color: #2a5298; }
-  .typing-input.correct { border-color: #2ecc71; background: #e8f8ef; }
-  .typing-input.wrong { border-color: #e74c3c; background: #fdecea; }
-  .typing-feedback { text-align: center; font-size: 15px; min-height: 22px; }
-  .typing-feedback.correct { color: #1a7a42; }
-  .typing-feedback.wrong { color: #a3281c; }
+  .typing-input:focus { border-color: #7c3aed; background: #fff; }
+  .typing-input.correct { border-color: #10b981; background: #d1fae5; }
+  .typing-input.wrong { border-color: #e11d48; background: #ffe4e6; }
+  .typing-feedback { text-align: center; font-size: 15px; min-height: 22px; font-weight: 600; }
+  .typing-feedback.correct { color: #059669; }
+  .typing-feedback.wrong { color: #be123c; }
 
   .card {
-    background: #f8f9fc; border-radius: 14px; padding: 40px 24px;
-    text-align: center; margin: 16px 0; min-height: 200px;
+    background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+    border-radius: 20px; padding: 48px 24px;
+    text-align: center; margin: 16px 0; min-height: 220px;
     display: flex; flex-direction: column; justify-content: center; align-items: center;
-    cursor: pointer; user-select: none; transition: background 0.2s;
+    cursor: pointer; user-select: none; transition: all 0.2s;
+    border: 2px solid #e9d5ff;
   }
-  .card:hover { background: #eef2fa; }
-  .card .front { font-size: 30px; font-weight: 600; }
-  .card .back { font-size: 26px; color: #2a5298; margin-top: 18px; font-weight: 600; }
-  .card .hint { font-size: 13px; color: #999; margin-top: 18px; }
-  .card .badge { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+  .card:hover { border-color: #a855f7; transform: scale(1.01); }
+  .card .front { font-size: 32px; font-weight: 700; color: #4c1d95; }
+  .card .back { font-size: 26px; color: #6d28d9; margin-top: 18px; font-weight: 700; }
+  .card .hint { font-size: 13px; color: #a78bfa; margin-top: 20px; }
+  .card .badge {
+    font-size: 11px; color: #7c3aed;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    margin-bottom: 14px; font-weight: 700;
+  }
   .rating { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 14px; }
   .rating button {
-    padding: 14px 8px; border: none; border-radius: 10px;
-    font-size: 14px; font-weight: 600; cursor: pointer;
-    color: #fff; transition: transform 0.1s;
+    padding: 16px 8px; border: none; border-radius: 14px;
+    font-size: 14px; font-weight: 700; cursor: pointer;
+    color: #fff; transition: all 0.15s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
+  .rating button:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.18); }
   .rating button:active { transform: scale(0.96); }
-  .rating .again { background: #e74c3c; }
-  .rating .hard  { background: #f39c12; }
-  .rating .good  { background: #2ecc71; }
-  .rating .easy  { background: #3498db; }
-  .rating .interval { display: block; font-size: 11px; opacity: 0.85; font-weight: 400; margin-top: 4px; }
+  .rating .again { background: linear-gradient(135deg, #f43f5e, #e11d48); }
+  .rating .hard  { background: linear-gradient(135deg, #f59e0b, #d97706); }
+  .rating .good  { background: linear-gradient(135deg, #10b981, #059669); }
+  .rating .easy  { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+  .rating .interval { display: block; font-size: 11px; opacity: 0.95; font-weight: 500; margin-top: 4px; }
 
   .recall-box {
-    background: #f8f9fc; border-radius: 14px; padding: 28px 24px;
+    background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+    border-radius: 18px; padding: 32px 24px;
     text-align: center; margin: 16px 0;
+    border: 2px solid #e9d5ff;
   }
-  .recall-box .hint-text { color: #888; font-size: 14px; margin-bottom: 16px; }
+  .recall-box .hint-text { color: #7c3aed; font-size: 14px; margin-bottom: 18px; font-weight: 500; }
 
   .result { text-align: center; }
-  .result h2 { font-size: 24px; margin-bottom: 16px; }
-  .result p { font-size: 18px; margin-bottom: 20px; color: #555; }
+  .result h2 { font-size: 26px; margin-bottom: 16px; color: #4c1d95; }
+  .result p { font-size: 18px; margin-bottom: 20px; color: #6b7280; }
   .btn {
-    display: inline-block; padding: 12px 24px; background: #2a5298;
-    color: #fff; border: none; border-radius: 10px; font-size: 15px;
-    cursor: pointer; transition: background 0.15s; text-decoration: none; margin: 4px;
+    display: inline-block; padding: 14px 28px;
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    color: #fff; border: none; border-radius: 14px; font-size: 15px;
+    cursor: pointer; transition: all 0.15s; text-decoration: none; margin: 4px;
+    font-weight: 700;
+    box-shadow: 0 4px 14px rgba(109, 40, 217, 0.25);
   }
-  .btn:hover { background: #1e3c72; }
-  .btn.secondary { background: #eee; color: #333; }
-  .btn.secondary:hover { background: #ddd; }
-  .btn.danger { background: #e74c3c; }
-  .btn.danger:hover { background: #c0392b; }
-  .btn.small { padding: 6px 12px; font-size: 13px; }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(109, 40, 217, 0.35); }
+  .btn.secondary { background: #f3e8ff; color: #6d28d9; box-shadow: none; }
+  .btn.secondary:hover { background: #e9d5ff; }
+  .btn.danger { background: linear-gradient(135deg, #f43f5e, #e11d48); }
+  .btn.danger:hover { box-shadow: 0 8px 22px rgba(225, 29, 72, 0.35); }
+  .btn.small { padding: 6px 14px; font-size: 13px; }
   .upload-area { text-align: center; padding: 24px 20px; }
   .upload-area input[type="file"] { display: none; }
   .upload-label {
-    display: inline-block; padding: 14px 28px; background: #2a5298;
-    color: #fff; border-radius: 10px; cursor: pointer; font-size: 16px; margin-bottom: 12px;
+    display: inline-block; padding: 16px 32px;
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    color: #fff; border-radius: 14px; cursor: pointer; font-size: 16px; margin-bottom: 12px;
+    font-weight: 700; box-shadow: 0 4px 14px rgba(109, 40, 217, 0.25);
+    transition: all 0.15s;
   }
-  .upload-label:hover { background: #1e3c72; }
-  .hint { font-size: 13px; color: #888; margin-top: 10px; line-height: 1.5; }
+  .upload-label:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(109, 40, 217, 0.35); }
+  .hint { font-size: 13px; color: #9ca3af; margin-top: 10px; line-height: 1.5; }
   .topbar {
     display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 14px; font-size: 14px; color: #666;
+    margin-bottom: 14px; font-size: 14px; color: #6b7280;
   }
   .topbar button {
-    background: none; border: none; color: #2a5298;
-    cursor: pointer; font-size: 14px; padding: 4px 8px;
+    background: none; border: none; color: #6d28d9;
+    cursor: pointer; font-size: 14px; padding: 6px 10px;
+    font-weight: 600; border-radius: 8px; transition: background 0.15s;
   }
-  .topbar button:hover { text-decoration: underline; }
+  .topbar button:hover { background: #f3e8ff; text-decoration: none; }
 
-  .form-row { display: grid; gap: 6px; margin-bottom: 12px; }
-  .form-row label { font-size: 13px; color: #555; font-weight: 600; }
+  .form-row { display: grid; gap: 6px; margin-bottom: 14px; }
+  .form-row label { font-size: 13px; color: #4c1d95; font-weight: 700; }
   .form-row input, .form-row select {
-    padding: 10px 12px; border: 2px solid #e0e0e0; border-radius: 8px;
-    font-size: 15px; outline: none; transition: border-color 0.15s; font-family: inherit;
+    padding: 12px 14px; border: 2px solid #e9d5ff; border-radius: 12px;
+    font-size: 15px; outline: none; transition: all 0.15s; font-family: inherit;
+    background: #faf5ff; color: #1f1f2e;
   }
-  .form-row input:focus, .form-row select:focus { border-color: #2a5298; }
+  .form-row input:focus, .form-row select:focus { border-color: #7c3aed; background: #fff; }
   .radio-group { display: flex; gap: 8px; flex-wrap: wrap; }
   .radio-group label {
-    display: flex; align-items: center; gap: 6px; padding: 10px 14px;
-    border: 2px solid #e0e0e0; border-radius: 10px; cursor: pointer;
-    font-size: 14px; font-weight: 400; background: #fafafa; transition: all 0.15s;
+    display: flex; align-items: center; gap: 6px; padding: 10px 16px;
+    border: 2px solid #e9d5ff; border-radius: 12px; cursor: pointer;
+    font-size: 14px; font-weight: 500; background: #faf5ff; transition: all 0.15s;
+    color: #4c1d95;
   }
-  .radio-group label:hover { border-color: #2a5298; }
-  .radio-group input { accent-color: #2a5298; }
-  .radio-group label.active { border-color: #2a5298; background: #f0f4ff; }
+  .radio-group label:hover { border-color: #a855f7; }
+  .radio-group input { accent-color: #7c3aed; }
+  .radio-group label.active { border-color: #6d28d9; background: #ede9fe; font-weight: 700; }
 
-  .table-wrap { overflow-x: auto; margin-top: 12px; }
+  .table-wrap { overflow-x: auto; margin-top: 12px; border-radius: 14px; }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid #eee; vertical-align: middle; }
-  th { background: #f8f9fc; font-weight: 600; color: #555; position: sticky; top: 0; z-index: 1; }
-  tr:hover td { background: #fafbff; }
-  .tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
-  .tag.new { background: #e3f2fd; color: #1565c0; }
-  .tag.learning { background: #fff3e0; color: #e65100; }
-  .tag.young { background: #e8f5e9; color: #2e7d32; }
-  .tag.mature { background: #c8e6c9; color: #1b5e20; }
-  .tag.difficult { background: #ffebee; color: #c62828; }
+  th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #f3e8ff; vertical-align: middle; }
+  th { background: #faf5ff; font-weight: 700; color: #6d28d9; position: sticky; top: 0; z-index: 1; }
+  tr:hover td { background: #faf5ff; }
+  .tag { display: inline-block; padding: 3px 10px; border-radius: 8px; font-size: 11px; font-weight: 700; }
+  .tag.new { background: #dbeafe; color: #1e40af; }
+  .tag.learning { background: #fed7aa; color: #9a3412; }
+  .tag.young { background: #d1fae5; color: #065f46; }
+  .tag.mature { background: #a7f3d0; color: #064e3b; }
+  .tag.difficult { background: #ffe4e6; color: #9f1239; }
 
   .editor-toolbar {
     display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
-    margin-bottom: 12px; padding: 10px; background: #f8f9fc; border-radius: 10px;
+    margin-bottom: 12px; padding: 12px; background: #faf5ff; border-radius: 14px;
   }
   .editor-toolbar input[type="text"] {
-    flex: 1; min-width: 160px; padding: 8px 12px;
-    border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px;
+    flex: 1; min-width: 160px; padding: 10px 14px;
+    border: 2px solid #e9d5ff; border-radius: 12px; font-size: 14px;
+    background: #fff;
   }
-  .editor-toolbar input[type="text"]:focus { border-color: #2a5298; outline: none; }
+  .editor-toolbar input[type="text"]:focus { border-color: #7c3aed; outline: none; }
   .editor-toolbar select {
-    padding: 8px 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; background: #fff;
+    padding: 10px 14px; border: 2px solid #e9d5ff; border-radius: 12px;
+    font-size: 14px; background: #fff; color: #4c1d95;
   }
   .editor-toolbar button {
-    padding: 8px 14px; font-size: 13px; border: none; border-radius: 8px;
-    cursor: pointer; font-weight: 600; transition: background 0.15s;
+    padding: 10px 16px; font-size: 13px; border: none; border-radius: 12px;
+    cursor: pointer; font-weight: 700; transition: all 0.15s;
   }
-  .editor-toolbar button.primary { background: #2a5298; color: #fff; }
-  .editor-toolbar button.primary:hover { background: #1e3c72; }
-  .editor-toolbar button.neutral { background: #eee; color: #333; }
-  .editor-toolbar button.neutral:hover { background: #ddd; }
-  .editor-toolbar button.danger { background: #e74c3c; color: #fff; }
-  .editor-toolbar button.danger:hover { background: #c0392b; }
+  .editor-toolbar button.primary {
+    background: linear-gradient(135deg, #7c3aed, #6d28d9); color: #fff;
+  }
+  .editor-toolbar button.primary:hover { transform: translateY(-1px); }
+  .editor-toolbar button.neutral { background: #f3e8ff; color: #6d28d9; }
+  .editor-toolbar button.neutral:hover { background: #e9d5ff; }
+  .editor-toolbar button.danger {
+    background: linear-gradient(135deg, #f43f5e, #e11d48); color: #fff;
+  }
+  .editor-toolbar button.danger:hover { transform: translateY(-1px); }
   .editor-toolbar button:disabled { opacity: 0.4; cursor: not-allowed; }
-  .word-row.editing td { background: #fffbe6; }
+  .word-row.editing td { background: #fef3c7; }
   .word-row input.edit-input {
-    width: 100%; padding: 6px 8px; border: 2px solid #2a5298;
-    border-radius: 6px; font-size: 13px; font-family: inherit;
+    width: 100%; padding: 6px 10px; border: 2px solid #7c3aed;
+    border-radius: 8px; font-size: 13px; font-family: inherit;
   }
   .checkbox-col { width: 30px; text-align: center; }
-  .counter { font-size: 13px; color: #666; margin-left: auto; }
-  .empty-state { text-align: center; padding: 40px 20px; color: #888; font-size: 14px; }
+  .counter { font-size: 13px; color: #7c3aed; margin-left: auto; font-weight: 600; }
+  .empty-state { text-align: center; padding: 40px 20px; color: #a78bfa; font-size: 14px; }
 
   .system-notice {
-    background: #e8efff; color: #2a5298; border-radius: 10px;
-    padding: 12px 16px; margin-bottom: 16px; font-size: 13px;
-    display: flex; align-items: center; gap: 8px;
+    background: linear-gradient(135deg, #ede9fe 0%, #f3e8ff 100%);
+    color: #6d28d9; border-radius: 14px;
+    padding: 14px 18px; margin-bottom: 16px; font-size: 13px;
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 600; border: 2px solid #e9d5ff;
   }
-  .system-notice .icon { font-size: 18px; }
+  .system-notice .icon { font-size: 20px; }
 
-  /* Уменьшенные иконки в "Импорт / экспорт" */
   .io-actions {
     display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;
   }
@@ -301,7 +359,6 @@ const LS_DIFFICULT= 'av_difficult_v2';
 const LS_SETTINGS = 'av_settings_v2';
 const LS_STATS    = 'av_stats_v2';
 const LS_REMIND   = 'av_reminder_v2';
-const LS_SYSTEMS  = 'av_systems_v2'; // для хранения загруженных системных колод
 
 const SYSTEM_DECKS = [
   { id: 'system-aviation-english', url: './aviation-english.json' },
@@ -347,7 +404,6 @@ function loadAll() {
   try { settings = Object.assign(settings, JSON.parse(localStorage.getItem(LS_SETTINGS) || '{}')); } catch {}
   try {
     const st = JSON.parse(localStorage.getItem(LS_STATS) || '{}');
-    // миграция со старого поля streak
     if (st.streak !== undefined && st.series === undefined) st.series = st.streak;
     stats = Object.assign(stats, st);
   } catch {}
@@ -373,47 +429,34 @@ function uid() { return 'd' + Date.now().toString(36) + Math.random().toString(3
    МОДУЛЬ 1.5. ЗАГРУЗКА СИСТЕМНЫХ КОЛОД
    ========================================================================= */
 async function loadSystemDecks() {
-  // Найдём все системные колоды, которых нет в decks
   for (const sd of SYSTEM_DECKS) {
     const existing = decks.find(d => d.id === sd.id);
     if (existing) {
-      // Колода есть — проверим обновление слов
       try {
         const res = await fetch(sd.url + '?t=' + Date.now(), { cache: 'no-store' });
         if (!res.ok) continue;
         const data = await res.json();
         if (data && Array.isArray(data.words)) {
-          // Сравниваем по количеству — если изменилось, обновляем список слов,
-          // но прогресс оставляем (привязка по en)
           const currentCount = (wordsByDeck[sd.id] || []).length;
           if (currentCount !== data.words.length) {
             wordsByDeck[sd.id] = data.words.map(w => ({ en: w.en, ru: w.ru, created: w.created || todayStr() }));
             saveWordsMap();
           }
-          // Обновим название, если изменилось
-          if (data.name && existing.name !== data.name) {
-            existing.name = data.name; saveDecks();
-          }
+          if (data.name && existing.name !== data.name) { existing.name = data.name; saveDecks(); }
         }
-      } catch (e) { /* нет интернета — работаем с кэшем */ }
+      } catch (e) {}
     } else {
-      // Новая системная колода — загрузим
       try {
         const res = await fetch(sd.url + '?t=' + Date.now(), { cache: 'no-store' });
         if (!res.ok) continue;
         const data = await res.json();
         if (!data || !Array.isArray(data.words)) continue;
-        decks.push({
-          id: sd.id,
-          name: data.name || sd.id,
-          createdAt: todayStr(),
-          system: true,
-        });
+        decks.push({ id: sd.id, name: data.name || sd.id, createdAt: todayStr(), system: true });
         wordsByDeck[sd.id] = data.words.map(w => ({ en: w.en, ru: w.ru, created: w.created || todayStr() }));
         if (!progressByDeck[sd.id]) progressByDeck[sd.id] = {};
         if (!difficultByDeck[sd.id]) difficultByDeck[sd.id] = {};
         saveAll();
-      } catch (e) { /* пропускаем */ }
+      } catch (e) {}
     }
   }
   saveAll();
@@ -716,7 +759,6 @@ function renderHome() {
   const learned = words.filter(w => ['young','mature'].includes(wordStatus(w.en))).length;
   const todayN = todayCount();
   const goalPct = Math.min(100, Math.round(todayN / settings.dailyGoal * 100));
-  const sys = isSystemDeck(activeDeckId);
 
   app.innerHTML = `
     <div class="home-top">
@@ -747,7 +789,7 @@ function renderHome() {
         <span>🎯 Викторина</span>
         <span class="btn-count">${words.length > 0 ? 'начать' : 'нет слов'}</span>
       </button>
-      <button id="btnCards" ${due === 0 ? 'disabled' : ''}>
+      <button class="secondary-action" id="btnCards" ${due === 0 ? 'disabled' : ''}>
         <span>🃏 Карточки (SRS)</span>
         <span class="btn-count">${due > 0 ? due + ' к повторению' : 'всё повторено'}</span>
       </button>
@@ -891,7 +933,7 @@ function renderEditor() {
       <button id="backHome">← Назад</button>
       <span>Редактор · ${deckName(activeDeckId)} · ${getWords().length} слов</span>
     </div>
-    ${sys ? `<div class="system-notice"><span class="icon">🔒</span>Это системная колода — слова нельзя менять, но можно учить.</div>` : ''}
+    ${sys ? `<div class="system-notice"><span class="icon">🔒</span>Системная колода — слова нельзя менять, но можно учить.</div>` : ''}
     <div class="editor-toolbar">
       <input type="text" id="edSearch" placeholder="Поиск..." value="${escapeHtml(editorState.search)}">
       <select id="edSort">
@@ -901,7 +943,7 @@ function renderEditor() {
         <option value="status"${editorState.sortBy==='status'?'selected':''}>По статусу</option>
       </select>
       <button class="neutral" id="edSortDir">${editorState.sortDir === 'asc' ? '↑ A→Z' : '↓ Z→A'}</button>
-      ${sys ? '' : `<button class="primary" id="edAdd" style="padding:4px 8px;font-size:11px;">➕</button>`}
+      ${sys ? '' : `<button class="primary" id="edAdd" style="padding:6px 12px;font-size:12px;">➕</button>`}
     </div>
     ${sys ? '' : `
     <div class="editor-toolbar">
@@ -910,7 +952,7 @@ function renderEditor() {
       <button class="neutral" id="edResetSel" ${editorState.selected.size === 0 ? 'disabled' : ''}>Сбросить прогресс</button>
       <button class="neutral" id="edDifficultSel" ${editorState.selected.size === 0 ? 'disabled' : ''}>🔁 В сложные</button>
       <button class="danger" id="edDeleteSel" ${editorState.selected.size === 0 ? 'disabled' : ''}>🗑 Удалить</button>
-      <span class="counter">${getFilteredWords().length} показано · ${editorState.selected.size} выбрано</span>
+      <span class="counter">${getFilteredWords().length} · ${editorState.selected.size} выбрано</span>
     </div>
     `}
     <div class="table-wrap" id="edTableWrap"></div>
@@ -1056,7 +1098,7 @@ function renderEditorTable() {
       const key = e.target.closest('tr').dataset.key;
       if (cb.checked) editorState.selected.add(key); else editorState.selected.delete(key);
       const counter = document.querySelector('.counter');
-      if (counter) counter.textContent = `${getFilteredWords().length} показано · ${editorState.selected.size} выбрано`;
+      if (counter) counter.textContent = `${getFilteredWords().length} · ${editorState.selected.size} выбрано`;
       ['edSelNone','edDeleteSel','edResetSel','edDifficultSel'].forEach(id => {
         const b = document.getElementById(id); if (b) b.disabled = editorState.selected.size === 0;
       });
@@ -1100,12 +1142,12 @@ function addWordInline() {
   if (document.getElementById('addPanel')) { document.getElementById('addPanel').remove(); return; }
   const panel = document.createElement('div');
   panel.id = 'addPanel';
-  panel.style.cssText = 'background:#f8f9fc;border-radius:10px;padding:12px;margin-bottom:12px;display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:center;';
+  panel.style.cssText = 'background:#faf5ff;border-radius:14px;padding:12px;margin-bottom:12px;display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:center;border:2px solid #e9d5ff;';
   panel.innerHTML = `
-    <input id="addEn" placeholder="English" style="padding:8px 10px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;">
-    <input id="addRu" placeholder="Русский" style="padding:8px 10px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;">
+    <input id="addEn" placeholder="English" style="padding:10px 12px;border:2px solid #e9d5ff;border-radius:10px;font-size:14px;background:#fff;">
+    <input id="addRu" placeholder="Русский" style="padding:10px 12px;border:2px solid #e9d5ff;border-radius:10px;font-size:14px;background:#fff;">
     <div>
-      <button class="btn small" id="addSave" style="background:#2a5298;color:#fff;">Добавить</button>
+      <button class="btn small" id="addSave">Добавить</button>
       <button class="btn small secondary" id="addCancel">✖</button>
     </div>
   `;
@@ -1393,7 +1435,7 @@ function renderQuizResult() {
 }
 
 /* =========================================================================
-   МОДУЛЬ 15. КАРТОЧКИ (исправлен предпросмотр интервалов)
+   МОДУЛЬ 15. КАРТОЧКИ
    ========================================================================= */
 let cardQueue = [], cardIndex = 0, cardFlipped = false, cardSessionDone = 0, cardSource = 'due';
 function startCards(source = 'due') {
@@ -1439,8 +1481,6 @@ function flipCard(word, front, back) {
   cardEl.innerHTML = `<div class="badge">Перевод</div><div class="front">${escapeHtml(front)}</div><div class="back">${escapeHtml(back)}</div>`;
   const card = getCard(word.en);
 
-  // ВАЖНО: для каждой кнопки считаем интервал на КОПИИ карточки,
-  // чтобы preview не портил саму карточку и каждая кнопка показывала своё.
   const pAgain = schedule({ ...card }, 0).interval;
   const pHard  = schedule({ ...card }, 1).interval;
   const pGood  = schedule({ ...card }, 2).interval;
@@ -1511,12 +1551,12 @@ function renderStats() {
       <span class="tag mature">Зрелые</span> ${statuses.mature}
     </p>
     <h2 style="margin-top:24px;">Активность за 14 дней</h2>
-    <div style="display:flex;align-items:flex-end;gap:4px;height:100px;padding:10px;background:#f8f9fc;border-radius:10px;">
+    <div style="display:flex;align-items:flex-end;gap:4px;height:100px;padding:10px;background:#faf5ff;border-radius:14px;">
       ${last14.map(d => `
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
-          <div style="font-size:10px;color:#888;">${d.count || ''}</div>
-          <div style="width:100%;background:#2a5298;border-radius:3px 3px 0 0;height:${Math.round(d.count / maxCount * 70)}px;min-height:2px;"></div>
-          <div style="font-size:9px;color:#aaa;">${d.date.slice(8)}</div>
+          <div style="font-size:10px;color:#7c3aed;font-weight:600;">${d.count || ''}</div>
+          <div style="width:100%;background:linear-gradient(180deg, #a855f7, #7c3aed);border-radius:3px 3px 0 0;height:${Math.round(d.count / maxCount * 70)}px;min-height:2px;"></div>
+          <div style="font-size:9px;color:#a78bfa;">${d.date.slice(8)}</div>
         </div>
       `).join('')}
     </div>
@@ -1616,7 +1656,7 @@ function renderSettings() {
 }
 
 /* =========================================================================
-   МОДУЛЬ 18. ИМПОРТ / ЭКСПОРТ (с уменьшенными иконками)
+   МОДУЛЬ 18. ИМПОРТ / ЭКСПОРТ
    ========================================================================= */
 function renderData() {
   app.innerHTML = `
@@ -1625,7 +1665,7 @@ function renderData() {
       <span>Импорт / экспорт · ${deckName(activeDeckId)}</span>
     </div>
     <h2>📥 Импорт слов в колоду</h2>
-    <p style="font-size:14px;color:#555;margin-bottom:12px;">TXT / CSV / TSV.</p>
+    <p style="font-size:14px;color:#6b7280;margin-bottom:12px;">TXT / CSV / TSV.</p>
     <div class="io-actions">
       <label class="upload-label" for="impFile">📁 Выбрать файл</label>
       <input type="file" id="impFile" accept=".txt,.csv,.tsv" style="display:none;">
@@ -1654,7 +1694,7 @@ function renderData() {
       const parsed = file.name.toLowerCase().endsWith('.csv') ? parseCSV(text) : parseAny(text);
       if (!parsed || parsed.length === 0) {
         document.getElementById('impMsg').textContent = 'Не найдено ни одного слова.';
-        document.getElementById('impMsg').style.color = '#e74c3c'; return;
+        document.getElementById('impMsg').style.color = '#e11d48'; return;
       }
       const replace = getWords().length > 0
         ? confirm(`Найдено ${parsed.length}.\n\nOK — добавить\nОтмена — заменить`)
@@ -1670,7 +1710,7 @@ function renderData() {
         saveProgressMap(); saveDifficultMap();
       }
       document.getElementById('impMsg').textContent = `Импортировано: ${parsed.length}.`;
-      document.getElementById('impMsg').style.color = '#2ecc71';
+      document.getElementById('impMsg').style.color = '#10b981';
     };
     reader.readAsText(file, 'UTF-8');
   });
@@ -1704,11 +1744,11 @@ function renderData() {
         reminder = Object.assign(reminder, d.reminder || {});
         saveAll();
         document.getElementById('allMsg').textContent = 'Импорт успешен.';
-        document.getElementById('allMsg').style.color = '#2ecc71';
+        document.getElementById('allMsg').style.color = '#10b981';
         setTimeout(renderHome, 700);
       } catch (err) {
         document.getElementById('allMsg').textContent = 'Ошибка: ' + err.message;
-        document.getElementById('allMsg').style.color = '#e74c3c';
+        document.getElementById('allMsg').style.color = '#e11d48';
       }
     };
     reader.readAsText(file, 'UTF-8');
@@ -1737,12 +1777,8 @@ function showNotification(title, body) {
     if (navigator.serviceWorker && navigator.serviceWorker.controller) {
       navigator.serviceWorker.ready.then(reg => {
         reg.showNotification(title, {
-          body,
-          icon: './plane192.png',
-          badge: './plane192.png',
-          tag: 'aeroen-reminder',
-          renotify: true,
-          vibrate: [100, 50, 100],
+          body, icon: './plane192.png', badge: './plane192.png',
+          tag: 'aeroen-reminder', renotify: true, vibrate: [100, 50, 100],
           data: { url: './' }
         });
       });
@@ -1790,11 +1826,11 @@ function renderReminders() {
       <span>Напоминания</span>
     </div>
     <h2>🔔 Напоминания</h2>
-    <p style="font-size:14px;color:#555;line-height:1.6;margin-bottom:16px;">
+    <p style="font-size:14px;color:#6b7280;line-height:1.6;margin-bottom:16px;">
       Браузер напомнит вам заниматься, если вы давно не открывали тренажёр.
       Уведомление показывается, только если <b>сегодня ещё не занимались</b> и наступило выбранное время.
     </p>
-    <div style="padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:12px;background:${statusClass==='ok'?'#e8f5e9':statusClass==='warn'?'#fff3e0':'#f5f5f5'};color:${statusClass==='ok'?'#2e7d32':statusClass==='warn'?'#e65100':'#666'};">${statusText}</div>
+    <div style="padding:12px 16px;border-radius:12px;font-size:13px;margin-bottom:14px;background:${statusClass==='ok'?'#d1fae5':statusClass==='warn'?'#fed7aa':'#f3e8ff'};color:${statusClass==='ok'?'#065f46':statusClass==='warn'?'#9a3412':'#6d28d9'};font-weight:600;">${statusText}</div>
     ${supported && perm !== 'granted' ? `<div style="text-align:center;margin-bottom:16px;"><button class="btn" id="btnGrant">🔔 Разрешить уведомления</button></div>` : ''}
     <div class="form-row">
       <label>Напоминания включены</label>
@@ -1841,7 +1877,7 @@ function renderReminders() {
 }
 
 /* =========================================================================
-   МОДУЛЬ 20. PWA (только регистрация SW, без UI установки)
+   МОДУЛЬ 20. PWA
    ========================================================================= */
 function initPWA() {
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
