@@ -1,0 +1,10 @@
+Maintenance	техническое обслуживание
+Introduction	пояснение, введение
+Manual	руководство
+Aircraft	воздушное судно
+Control	управление
+Management	управление
+Guide	руководство
+Auxiliary	вспомогательный
+Power	силовой
+Unit	блок, установка
