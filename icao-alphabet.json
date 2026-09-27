@@ -1,0 +1,33 @@
+{
+  "id": "system-icao-alphabet",
+  "name": "ICAO Alphabet",
+  "system": true,
+  "words": [
+    { "en": "Alfa",    "ru": "А (Альфа)" },
+    { "en": "Bravo",   "ru": "Б (Браво)" },
+    { "en": "Charlie", "ru": "Ц (Чарли)" },
+    { "en": "Delta",   "ru": "Д (Дельта)" },
+    { "en": "Echo",    "ru": "Е (Эхо)" },
+    { "en": "Foxtrot", "ru": "Ф (Фокстрот)" },
+    { "en": "Golf",    "ru": "Г (Гольф)" },
+    { "en": "Hotel",   "ru": "Х (Отель)" },
+    { "en": "India",   "ru": "И (Индия)" },
+    { "en": "Juliett", "ru": "Й (Джульетт)" },
+    { "en": "Kilo",    "ru": "К (Кило)" },
+    { "en": "Lima",    "ru": "Л (Лима)" },
+    { "en": "Mike",    "ru": "М (Майк)" },
+    { "en": "November","ru": "Н (Новембер)" },
+    { "en": "Oscar",   "ru": "О (Оскар)" },
+    { "en": "Papa",    "ru": "П (Папа)" },
+    { "en": "Quebec",  "ru": "К (Квебек)" },
+    { "en": "Romeo",   "ru": "Р (Ромео)" },
+    { "en": "Sierra",  "ru": "С (Сьерра)" },
+    { "en": "Tango",   "ru": "Т (Танго)" },
+    { "en": "Uniform", "ru": "У (Юниформ)" },
+    { "en": "Victor",  "ru": "В (Виктор)" },
+    { "en": "Whiskey", "ru": "В (Виски)" },
+    { "en": "X-ray",   "ru": "Х (Икс-рей)" },
+    { "en": "Yankee",  "ru": "Й (Янки)" },
+    { "en": "Zulu",    "ru": "З (Зулу)" }
+  ]
+}
