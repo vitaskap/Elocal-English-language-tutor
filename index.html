@@ -479,7 +479,6 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
 .btn.full { width: 100%; }
 .btn-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
 
-/* ====== УМЕНЬШЕННЫЕ КНОПКИ ДЛЯ ИМПОРТ/ЭКСПОРТ ====== */
 .btn.btn-compact { padding: 8px 14px; font-size: 12px; gap: 5px; }
 .btn.btn-compact svg { width: 14px; height: 14px; }
 
@@ -841,7 +840,6 @@ async function loadSystemDecks() {
       if (!data || !Array.isArray(data.words)) continue;
 
       if (existing) {
-        // Обновляем, если количество слов изменилось. Прогресс сохраняется (привязка по en).
         const currentCount = (wordsByDeck[sd.id] || []).length;
         if (currentCount !== data.words.length) {
           wordsByDeck[sd.id] = data.words.map(w => ({
@@ -853,7 +851,6 @@ async function loadSystemDecks() {
           existing.name = data.name; saveDecks();
         }
       } else {
-        // Создаём новую системную колоду
         decks.push({
           id: sd.id,
           name: data.name || sd.id,
@@ -1483,7 +1480,7 @@ function renderDeckPicker() {
 }
 
 /* =========================================================================
-   МЕНЮ "ЕЩЁ" (без логотипа и установки)
+   МЕНЮ "ЕЩЁ"
    ========================================================================= */
 function renderMore() {
   lastRender = renderMore;
@@ -1526,6 +1523,15 @@ function renderMore() {
       </button>
     </div>
 
+    <h2 class="section-title">Аккаунт</h2>
+    <div class="list-section">
+      <button class="list-item" id="mLogout">
+        <div class="list-item-icon danger">${ICONS.lock}</div>
+        <div class="list-item-text" style="color:var(--danger);">Выйти из аккаунта</div>
+        <div class="list-item-arrow">›</div>
+      </button>
+    </div>
+
     <h2 class="section-title">Опасная зона</h2>
     <div class="list-section">
       <button class="list-item" id="mReset">
@@ -1549,6 +1555,15 @@ function renderMore() {
   document.getElementById('mData').addEventListener('click', renderData);
   document.getElementById('mSettings').addEventListener('click', renderSettings);
   document.getElementById('mReminders').addEventListener('click', renderReminders);
+  document.getElementById('mLogout').addEventListener('click', () => {
+    if (confirm('Выйти из аккаунта?')) {
+      if (window.keycloak) {
+        window.keycloak.logout({ redirectUri: window.location.origin + window.location.pathname });
+      } else {
+        location.reload();
+      }
+    }
+  });
   document.getElementById('mReset').addEventListener('click', () => {
     if (!confirm(`Сбросить прогресс колоды «${deckName(activeDeckId)}»? Слова останутся.`)) return;
     progressByDeck[activeDeckId] = {};
@@ -2147,7 +2162,7 @@ function renderQuizResult() {
 }
 
 /* =========================================================================
-   КАРТОЧКИ — ИСПРАВЛЕН ПРЕДПРОСМОТР ИНТЕРВАЛОВ
+   КАРТОЧКИ
    ========================================================================= */
 let cardQueue = [], cardIndex = 0, cardFlipped = false, cardSessionDone = 0, cardSource = 'due';
 
@@ -2210,8 +2225,6 @@ function flipCard(word, front, back) {
 
   const card = getCard(word.en);
 
-  // ИСПРАВЛЕНО: передаём копию карточки, чтобы schedule() не мутировал оригинал.
-  // Иначе первый вызов (Again) меняет interval=0, и все последующие кнопки показывают одно и то же.
   const preview = {
     again: schedule({ ...card }, 0).interval,
     hard:  schedule({ ...card }, 1).interval,
@@ -2513,7 +2526,7 @@ function renderReminders() {
 }
 
 /* =========================================================================
-   ИМПОРТ / ЭКСПОРТ (уменьшенные иконки)
+   ИМПОРТ / ЭКСПОРТ
    ========================================================================= */
 function renderData() {
   lastRender = renderData;
@@ -2623,35 +2636,64 @@ function renderData() {
 }
 
 /* =========================================================================
-   СТАРТ
+   СТАРТ (вызывается после успешной авторизации)
    ========================================================================= */
-(async function init() {
+async function startApp() {
   initPWA();
   loadAll();
   await loadSystemDecks();
   startReminderLoop();
   renderHome();
-})();
+}
 </script>
 <script>
+/* =========================================================================
+   KEYCLOAK
+   =========================================================================
+   ВАЖНО: замените url на реальный адрес вашего Keycloak-сервера.
+   Пример: 'https://keycloak.example.com'
+   ========================================================================= */
+(function () {
+  const KEYCLOAK_URL = 'https://ВАШ_KEYCLOAK_СЕРВЕР'; // ← ЗАМЕНИТЕ ЗДЕСЬ
+
+  if (KEYCLOAK_URL.includes('ВАШ_KEYCLOAK_СЕРВЕР')) {
+    console.error('Keycloak: не указан URL сервера. Замените KEYCLOAK_URL в конце index.html.');
+    document.getElementById('app').innerHTML =
+      '<div style="padding:40px 20px;text-align:center;color:#ef4444;font-family:sans-serif;">' +
+      '<h2 style="margin-bottom:12px;">Настройка не завершена</h2>' +
+      '<p>В файле <code>index.html</code> не указан адрес Keycloak-сервера. ' +
+      'Замените <code>https://ВАШ_KEYCLOAK_СЕРВЕР</code> на реальный URL.</p>' +
+      '</div>';
+    return;
+  }
+
   const keycloak = new Keycloak({
-    url: 'https://ВАШ_KEYCLOAK_СЕРВЕР', // Замените на реальный адрес, например https://keycloak.example.com
-    realm: 'aviation',                   // Ваш Realm в Keycloak
-    clientId: 'aviation-app'             // Ваш Client ID
+    url: KEYCLOAK_URL,
+    realm: 'aviation',
+    clientId: 'aviation-app'
   });
 
+  window.keycloak = keycloak;
+
   keycloak.init({
-    onLoad: 'login-required', // Сразу требует авторизацию
-    pkceMethod: 'S256',       // Обязательно для безопасности публичных SPA
-    checkLoginIframe: false   // Отключаем iframe, чтобы избежать проблем с CORS на GitHub Pages
-  }).then(authenticated => {
+    onLoad: 'login-required',
+    pkceMethod: 'S256',
+    checkLoginIframe: false
+  }).then(function (authenticated) {
     if (authenticated) {
       console.log('Пользователь вошёл:', keycloak.tokenParsed.preferred_username);
-      // Здесь ваш интерфейс уже загружен и виден пользователю
+      startApp();
     }
-  }).catch(err => {
+  }).catch(function (err) {
     console.error('Ошибка Keycloak:', err);
+    document.getElementById('app').innerHTML =
+      '<div style="padding:40px 20px;text-align:center;color:#ef4444;font-family:sans-serif;">' +
+      '<h2 style="margin-bottom:12px;">Не удалось авторизоваться</h2>' +
+      '<p>Проверьте соединение с сервером авторизации и правильность настроек клиента.</p>' +
+      '<p style="margin-top:12px;font-size:12px;color:#64748b;">' + String(err && err.message || err) + '</p>' +
+      '</div>';
   });
+})();
 </script>
 </body>
 </html>
