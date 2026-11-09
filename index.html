@@ -705,6 +705,7 @@ h2.section-title { font-size: 18px; font-weight: 800; letter-spacing: -0.3px; ma
   .app { padding-bottom: 120px; }
 }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/keycloak-js@latest/dist/keycloak.min.js"></script>
 </head>
 <body>
 <div class="app" id="app"></div>
@@ -2631,6 +2632,26 @@ function renderData() {
   startReminderLoop();
   renderHome();
 })();
+</script>
+<script>
+  const keycloak = new Keycloak({
+    url: 'https://ВАШ_KEYCLOAK_СЕРВЕР', // Замените на реальный адрес, например https://keycloak.example.com
+    realm: 'aviation',                   // Ваш Realm в Keycloak
+    clientId: 'aviation-app'             // Ваш Client ID
+  });
+
+  keycloak.init({
+    onLoad: 'login-required', // Сразу требует авторизацию
+    pkceMethod: 'S256',       // Обязательно для безопасности публичных SPA
+    checkLoginIframe: false   // Отключаем iframe, чтобы избежать проблем с CORS на GitHub Pages
+  }).then(authenticated => {
+    if (authenticated) {
+      console.log('Пользователь вошёл:', keycloak.tokenParsed.preferred_username);
+      // Здесь ваш интерфейс уже загружен и виден пользователю
+    }
+  }).catch(err => {
+    console.error('Ошибка Keycloak:', err);
+  });
 </script>
 </body>
 </html>
